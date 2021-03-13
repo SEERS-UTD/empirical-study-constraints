@@ -1,0 +1,428 @@
+ID,System,Section/File,Text,Interpreted constraint,Type
+ANT-1,apache-ant-1.10.6,https://ant.apache.org/manual/using.html#filters,"A project can have a set of tokens that might be automatically expanded if found when a file is copied, when the filtering-copy behavior is selected in the tasks that support this",has Task.filteringCopy,dual-value-comparison
+ANT-2,apache-ant-1.10.17,using.html#buildfile,"A project has three attributes:
+...
+default | the default target to use when no target is supplied.",if target is not present,dual-value-comparison
+ANT-3,apache-ant-1.10.28,using.html#buildfile,"Since Ant 1.8.0, path has an optional cache attribute, if it is set to true, the path instance will only scan its nested resource collections once and assume it doesn't change during the build anymore (the default for cache still is false)",Path.cache = true,dual-value-comparison
+ANT-4,apache-ant-1.10.32,using.html#buildfile,"Since Ant 1.8.0, path has an optional cache attribute, if it is set to true, the path instance will only scan its nested resource collections once and assume it doesn't change during the build anymore (the default for cache still is false)",default Path.cache = false,concrete-value
+ANT-5,apache-ant-1.10.33,running.html#commandline,"When no arguments are specified, Ant looks for a build.xml file in the current directory and, if found, uses that file as the build file and runs the target specified in the default attribute of the <project> tag.",if build.xml found,dual-value-comparison
+ANT-6,apache-ant-1.10.34,targets.html#targets,"Targets without such a description are deemed internal and will not be listed, unless either the -verbose or -debug option is used.",if -verbose used,dual-value-comparison
+ANT-7,apache-ant-1.10.35,running.html#sysprops,ant.XmlLogger.stylesheet.uri | filename (default log.xsl),default ant.XmlLogger.stylesheet.uri = log.xsl,concrete-value
+ANT-8,apache-ant-1.10.36,Tasks/dependset.html,"If any of the sources has been modified more recently than any of the target files, all of the target files are removed.",if source.has_been_modified_more_recently,dual-value-comparison
+ANT-9,apache-ant-1.10.37,Tasks/dependset.html,At least one set of sources and one set of targets is required.,amountOfSetsSources > 0,value-comparison
+ANT-10,apache-ant-1.10.7,Tasks/unpack.html,"If dest is a directory the name of the destination file is the same as src (with the .gz, .bz2 or .xz extension removed if present).",if dest is directory,dual-value-comparison
+ANT-11,apache-ant-1.10.8,Tasks/unpack.html,"If dest is omitted, the parent dir of src is taken. ",if dest not present,dual-value-comparison
+ANT-12,apache-ant-1.10.9,Tasks/javac.html,defaultexcludes | Indicates whether default excludes should be used or not (yes|no).,"options for javac.defaultexcludes = yes, no",dual-value-comparison
+ANT-13,apache-ant-1.10.10,Tasks/javac.html,"executable | Complete path to the javac executable to use in case of fork is yes.
+Since Ant 1.6 this attribute can also be used to specify the path to the executable when using jikes, jvc, gcj or sj.",if javac.fork = yes,dual-value-comparison
+ANT-14,apache-ant-1.10.11,Tasks/jar.html,"When set to yes, the JAR file is updated with the files specified.",if jar.update = yes,dual-value-comparison
+ANT-15,apache-ant-1.10.12,Tasks/jar.html,"If the manifest is omitted, a simple one will be supplied by Apache Ant.",if manifest is not present,dual-value-comparison
+ANT-16,apache-ant-1.10.13,Tasks/jar.html,"whenmanifestonly | behavior when no files match. Valid values are fail, skip, and create. | No; defaults to create",default jar.whenmanifestonly = create,concrete-value
+ANT-17,apache-ant-1.10.14,Tasks/java.html,jar | the location of the jar file to execute (must have a Main-Class entry in the manifest). fork must be set to true if this option is selected. See notes below for more details.,if java.fork = true,dual-value-comparison
+ANT-18,apache-ant-1.10.15,Tasks/java.html,fork | if enabled triggers the class execution in another JVM.,if java.fork = true,dual-value-comparison
+ANT-19,apache-ant-1.10.16,clonevm.html,"If the value of the property is true, then all system properties of the forked JVM will be the same as those of the JVM running Ant.",junit.clonevm = true,dual-value-comparison
+ANT-20,apache-ant-1.10.18,sysclasspath.html,"If the property has not been set, it defaults to ignore in this case.",default build.sysclasspath = ignore,concrete-value
+ANT-21,apache-ant-1.10.19,sysclasspath.html,"The values and their meanings are:
+value meaning
+only Only the system classpath is used and classpaths specified in build files, etc are ignored. This situation could be considered as the person running the build file knows more about the environment than the person writing the build file.
+ignore The system classpath is ignored. This situation is the reverse of the above. The person running the build trusts the build file writer to get the build file right. This mode is recommended for portable scripts.
+last The classpath is concatenated to any specified classpaths at the end. This is a compromise, where the build file writer has priority.
+first Any specified classpaths are concatenated to the system classpath. This is the other form of compromise where the build runner has priority.","options for build.sysclasspath are only, ignore, last, first",categorical-value
+ANT-22,apache-ant-1.10.20,dirset.html,"erroronmissingdir | Specify what happens if the base directory does not exist. If true a build error will happen, if false, the dirset will be ignored/empty. Since Apache Ant 1.7.1 | No; defaults to true (for backward compatibility reasons)",if dirset.erroronmissingdir = true,dual-value-comparison
+ANT-23,apache-ant-1.10.21,dirset.html,"erroronmissingdir | Specify what happens if the base directory does not exist. If true a build error will happen, if false, the dirset will be ignored/empty. Since Apache Ant 1.7.1 | No; defaults to true (for backward compatibility reasons)",default dirset.erroronmissingdir = true,concrete-value
+ANT-24,apache-ant-1.10.22,https://ant.apache.org/manual/targets.html#targets,"In the first example, if the module-A-present property is set (to any value, e.g. false), the target will be run. In the second example, if the module-A-present property is set (again, to any value), the target will not be run.",has If.property,dual-value-comparison
+ANT-25,apache-ant-1.10.23,https://ant.apache.org/manual/targets.html#targets,"The optional description attribute can be used to provide a one-line description of this target, which is printed by the -projecthelp command-line option. Targets without such a description are deemed internal and will not be listed, unless either the -verbose or -debug option is used.",has Target.description,dual-value-comparison
+ANT-26,apache-ant-1.10.24,https://ant.apache.org/manual/properties.html#propertyHelper,"Since Ant 1.8.0, you may instead use property expansion; a value of true (or on or yes) will enable the item","Property.value options are: yes, true, on",categorical-value
+ANT-27,apache-ant-1.10.25,https://ant.apache.org/manual/properties.html#propertyHelper,"Since Ant 1.8.0, you may instead use property expansion; a value of true (or on or yes) will enable the item, while false (or off or no) will disable it","Property.value options are: no, false, off",categorical-value
+ANT-28,apache-ant-1.10.26,running.html#sysprops,ant.executor.class | classname; default is org.apache.tools.ant.helper.DefaultExecutor,default ant.executor.class = org.apache.tools.ant.helper.DefaultExecutor,concrete-value
+ANT-29,apache-ant-1.10.27,https://ant.apache.org/manual/using.html#projects,"A project has three attributes:
+...
+basedir | No; defaults to the parent directory of the buildfile, unless overridden by the project's basedir or the basedir property",default Project.basedir = Buildfile.parentDir,concrete-value
+ANT-30,apache-ant-1.10.29,Tasks/javac.html,"Valid values for either the build.compiler property or the compiler attribute are:
+
+classic (the standard compiler of JDK 1.1/1.2) – javac1.1 and javac1.2 can be used as aliases.
+modern (the standard compiler of JDK 1.3 and later) – javac1.3, javac1.4, javac1.5 and javac1.6, javac1.7 (since Ant 1.8.2), javac1.8 (since Ant 1.8.3), javac1.9 (since Ant 1.9.5), javac9 (since Ant 1.9.8) and javac10+ (since Ant 1.10.2) can be used as aliases.
+jikes (the Jikes compiler).
+jvc (the Command-Line Compiler from Microsoft's SDK for Java / Visual J++) – microsoft can be used as an alias.
+kjc (the kopi compiler).
+gcj (the gcj compiler from GCC).
+sj (Symantec Java compiler) – symantec can be used as an alias.
+extJavac (run either modern or classic in a JVM of its own).","options for javac.compiler = classic, modern, jikes, jvc, kjc, gcj, sj, extJavac",categorical-value
+ANT-31,apache-ant-1.10.30,Tasks/jar.html,"whenmanifestonly | behavior when no files match. Valid values are fail, skip, and create. | No; defaults to create","options for jar.whenmanifestonly = fail, skip, create",categorical-value
+ANT-32,apache-ant-1.10.31,https://ant.apache.org/manual/targets.html#targets,"A target has the following attributes:
+...
+onMissingExtensionPoint | What to do if this target tries to extend a missing extension-point. (fail, warn, ignore)","Target.onMissingExtensionPoint options: fail, warn, ignore",categorical-value
+GUA-1,guava-28.0,https://github.com/google/guava/wiki/UsingAndAvoidingNullExplained#making-an-optional,"Each of these are static methods on Optional.
+...
+Optional.of(T) | Make an Optional containing the given non-null value, or fail fast on null.",Checks that the argument is non-null,dual-value-comparison
+GUA-2,guava-28.3,https://github.com/google/guava/wiki/CollectionUtilitiesExplained#general,getOnlyElement(Iterable) | Returns the only element in Iterable. Fails fast if the iterable is empty or has multiple elements.,Checks that iterable.size > 1,dual-value-comparison
+GUA-3,guava-28.4,https://github.com/google/guava/wiki/CollectionUtilitiesExplained#multisets,"containsOccurrences(Multiset sup, Multiset sub) | Returns true if sub.count(o) <= super.count(o) for all o.",Checks that sub.count(o) <= super.count(o),value-comparison
+GUA-4,guava-28.5,https://github.com/google/guava/wiki/PreconditionsExplained#preconditions,checkArgument(boolean) | Checks that the boolean is true. Use for validating arguments to methods.,Checks that the argument is true,dual-value-comparison
+GUA-5,guava-28.6,https://github.com/google/guava/wiki/PreconditionsExplained#preconditions,"checkNotNull(T) | Checks that the value is not null. Returns the value directly, so you can use checkNotNull(value) inline.",Checks that the argument is non-null,dual-value-comparison
+GUA-6,guava-28.7,https://github.com/google/guava/wiki/PreconditionsExplained#preconditions,"checkElementIndex(int index, int size) | Checks that index is a valid element index into a list, string, or array with the specified size. An element index may range from 0 inclusive to size exclusive. You don't pass the list, string, or array directly; you just pass its size.
+Returns index.",Checks that index < size,value-comparison
+GUA-7,guava-28.8,https://github.com/google/guava/wiki/PreconditionsExplained#preconditions,"checkPositionIndex(int index, int size) | Checks that index is a valid position index into a list, string, or array with the specified size. A position index may range from 0 inclusive to size inclusive. You don't pass the list, string, or array directly; you just pass its size.
+Returns index.",Checks that index <= size,value-comparison
+GUA-8,guava-28.9,https://github.com/google/guava/wiki/CollectionUtilitiesExplained#general,"getFirst(Iterable, T default) | Returns the first element of the iterable, or the default value if empty.",Checks that the iterable is empty,dual-value-comparison
+GUA-9,guava-28.10,https://github.com/google/guava/wiki/UsingAndAvoidingNullExplained#query-methods,"Each of these are non-static methods on a particular Optional<T> value.
+...
+boolean isPresent() | Returns true if this Optional contains a non-null instance.",Checks that Optional.value is not-null,dual-value-comparison
+GUA-10,guava-28.1,https://github.com/google/guava/wiki/UsingAndAvoidingNullExplained#query-methods,"Each of these are non-static methods on a particular Optional<T> value.
+...
+T get() | Returns the contained T instance, which must be present; otherwise, throws an IllegalStateException.",Checks that Optional.value is not null,dual-value-comparison
+GUA-11,guava-28.2,https://github.com/google/guava/wiki/OrderingExplained#application,min(Iterable) | Returns the minimum element of the specified Iterable. Throws a NoSuchElementException if the Iterable is empty.,Checks that the iterable is empty,dual-value-comparison
+HCO-1,httpcomponents,Tutorial 1.1.1,All HTTP messages must include the protocol version,Checks that Message.protocolVersion is not null/empty,dual-value-comparison
+HCO-2,httpcomponents,https://www.w3.org/Protocols/HTTP/1.0/spec.html#http-URL,"If the port is empty or not given, port 80 is assumed",Sets/Enforces default port to 80,concrete-value
+HCO-3,httpcomponents,Tutorial 1.1.3.2.,"If the headers aren't available, a length of -1 will be returned, and NULL for the content
+type.",if headers not present,dual-value-comparison
+HCO-4,httpcomponents,Tutorial 1.1.4.4,"Alternatively, a negative content length will read all data
+from the input stream, which is the same as supplying the exact content length, so use the length to
+limit the amount of data to read.",contentLength < 0,value-comparison
+HCO-5,httpcomponents,Tutorial 2.3.3,"HTTP/1.1
+connections are persistent by default, while HTTP/1.0 connections are not.",connection.version = HTTP/1.1,value-comparison
+HCO-6,httpcomponents,Tutorial 2.3.3,"The peer can indicate whether it intends to re-use the connection
+on the opposite side by sending Keep-Alive or Close values in the Connection header.",if Keep-Alive is present,dual-value-comparison
+HCO-7,httpcomponents,Tutorial 2.4,"By default the pool allows only 20 concurrent connections in total and two concurrent connections
+per a unique route.",concurrentConnections = 20,concrete-value
+HCO-8,httpcomponents,Tutorial 3.8.1,"Upon receiving an incoming request the HttpAsyncService verifies the message for compliance
+with the server expectations using
+HttpAsyncExpectationVerifier , if provided, and
+then
+HttpAsyncRequestHandlerResolver is used to resolve the request URI to a particular
+HttpAsyncRequestHandler intended to handle the request with the given URI.",HttpAsyncExpectationVerifier is present,dual-value-comparison
+HCO-9,httpcomponents,spec.html#Method,Servers should return the status code 501 (not implemented) if the method is unrecognized or not implemented.,if method is unrecognized,dual-value-comparison
+HCO-10,httpcomponents,Tutorial 1.1.3.2,"If the Content-Type header is available, a Header object will be returned",Checks that Header.Content-Type is not null/empty,dual-value-comparison
+HCO-11,httpcomponents,spec.html#Entity,"All responses to the HEAD request method must not include a body, even though the presence of entity header fields may lead one to believe they do.",HEAD request.body is not present,dual-value-comparison
+HCO-12,httpcomponents,spec.html#Entity,All other responses must include an entity body or a Content-Length header field defined with a value of zero (0).,response must include body,dual-value-comparison
+HCO-13,httpcomponents,spec.html#Entity,"If the media type remains unknown, the recipient should treat it as type ""application/octet-stream"".",if media type unknown,dual-value-comparison
+HCO-14,httpcomponents,spec.html#Entity,"If a Content-Length header field is present, its value in bytes represents the length of the Entity-Body",if Content-Length is persent,dual-value-comparison
+HCO-15,httpcomponents,spec.html#Method definitions,"The semantics of the GET method changes to a ""conditional GET"" if the request message includes an If-Modified-Since header field.",request.If-Modified-Since is present,dual-value-comparison
+HCO-16,httpcomponents,spec.html#Header Field Definitions,Any Content-Length greater than or equal to zero is a valid value.,Content-Length >= 0,value-comparison
+HCO-17,httpcomponents,spec.html#Entity,"All 1xx (informational), 204 (no content), and 304 (not modified) responses must not include a body.",Status code = 304,value-comparison
+HCO-18,httpcomponents,Tutorial 1.1.4.7,"If the supplied entity
+is already repeatable",Checks that the supplied entity is repeatable,dual-value-comparison
+HCO-19,httpcomponents,https://www.w3.org/Protocols/HTTP/1.0/spec.html#Operation,The default port is TCP 80,Sets/Enforces default port to 80,concrete-value
+HCO-20,httpcomponents,https://www.w3.org/Protocols/HTTP/1.0/spec.html#Basic-Rules,Recipients of header field TEXT containing octets outside the US-ASCII character set may assume that they represent ISO-8859-1 characters,Checks if character is outside US-ASCII,categorical-value
+HCO-21,httpcomponents,https://www.w3.org/Protocols/HTTP/1.0/spec.html#HTTP-Version,"Since the protocol version indicates the protocol capability of the sender, a proxy/gateway must never send a message with a version indicator which is greater than its native version; if a higher version request is received, the proxy/gateway must either downgrade the request version or respond with an error.",Checks if version received is greater than native version,value-comparison
+JED-1,jedit-5.6pre0,http://www.jedit.org/users-guide/starting.html,"If jEdit is started while another copy is already running, control is transferred to the running copy, and a second instance is not loaded. This saves time and memory if jEdit is started multiple times. Communication between instances of jEdit is implemented using TCP/IP sockets; the initial instance is known as the server, and subsequent invocations are clients.",has jEdit.alreadyRunning,dual-value-comparison
+JED-2,jedit-5.6pre11,http://www.jedit.org/users-guide/views.html,"View>Close View closes the current View. If only one View is open, closing it will exit jEdit, unless background mode is on; see Chapter 2, Starting jEdit for information about starting jEdit in background mode.",has jEdit.background,dual-value-comparison
+JED-3,jedit-5.6pre22,http://www.jedit.org/users-guide/action-bar.html,"If you specify a repeat count greater than 20, a confirmation dialog box will be displayed, asking if you really want to perform the action. This prevents you from hanging jEdit by executing a command too many times.",repeatCount > 20,value-comparison
+JED-4,jedit-5.6pre27,http://www.jedit.org/users-guide/creating.html,"File>New (shortcut: C+n) opens a new, empty, buffer. Another way to create a new file is to specify a non-existent file name when starting jEdit on the command line. A new file will be created on disk when the buffer is saved for the first time.",has File.savedFirstTime,dual-value-comparison
+JED-5,jedit-5.6pre28,http://www.jedit.org/users-guide/opening.html,"Files that you do not have write access to are opened in read-only mode, where editing is not permitted.",File.writeAccess,dual-value-comparison
+JED-6,jedit-5.6pre29,http://www.jedit.org/users-guide/saving.html,"File>Save As renames the buffer and saves it in a new location. Note that using this command to save over another open buffer will close the other buffer, to stop two buffers from being able to share the same path name.",Buffer.path == Buffer.path,value-comparison
+JED-7,jedit-5.6pre30,http://www.jedit.org/users-guide/saving.html,"File>Save a Copy As saves the buffer to a different location but does not rename the buffer, and does not clear the “modified” flag. Note that using this command to save over another open buffer will automatically reload the other buffer.",Buffer.path == Buffer.path,value-comparison
+JED-8,jedit-5.6pre31,http://www.jedit.org/users-guide/saving.html,"The autosave feature protects your work from computer crashes and such. Every 30 seconds, all buffers with unsaved changes are written out, with their respective file names, enclosed in hash (“#”) characters. For example, /home/user/project/program.c will be autosaved to home/user/project/#program.c# under your backup/autosave directory, or next to the original file, if no backup/autosave directory is specified.",has Buffer.unsavedChanges,dual-value-comparison
+JED-9,jedit-5.6pre32,http://www.jedit.org/users-guide/saving.html,"If an autosave file is found while a buffer is being loaded, jEdit will offer to recover the autosaved data.",has Buffer.autosaveFile,dual-value-comparison
+JED-10,jedit-5.6pre1,http://www.jedit.org/users-guide/saving.html,"If Autosave of Untitled Buffers is enabled, then jEdit will allow you to exit without asking you to save dirty untitled buffers, and will silently restore them for you on next jEdit startup.",has jEdit.autosaveUntitledBuffers,dual-value-comparison
+JED-11,jedit-5.6pre2,http://www.jedit.org/users-guide/saving.html,"The backup feature can be used to roll back to the previous version of a file after changes were made. When a buffer is saved for the first time after being opened, its original contents are “backed up” under a different file name.",has Buffer.savedFirstTime,dual-value-comparison
+JED-12,jedit-5.6pre3,http://www.jedit.org/users-guide/saving.html,The Max number of backups setting determines the number of backups to save. Setting this to zero disables the backup feature. Settings this to more than one adds numbered suffixes to file names. By default only one backup is saved.,jEdit.numberOfBackups == 0,value-comparison
+JED-13,jedit-5.6pre4,http://www.jedit.org/users-guide/saving.html,The Max number of backups setting determines the number of backups to save. Setting this to zero disables the backup feature. Settings this to more than one adds numbered suffixes to file names. By default only one backup is saved.,jEdit.numberOfBackups > 1,value-comparison
+JED-14,jedit-5.6pre5,http://www.jedit.org/users-guide/saving.html,"If the Backup, Autosave directory setting is non-empty, backups are saved in that location (with the full path to the original file under it). Otherwise, they are saved in the same directory as the original file.",has jEdit.autosaveDirectory,dual-value-comparison
+JED-15,jedit-5.6pre6,http://www.jedit.org/users-guide/starting.html,"Not only does the edit server pick a random TCP port number on startup, it also requires that clients provide an authorization key; a randomly-generated number only accessible to processes running on the local machine. So not only will “bad guys” have to guess a 64-bit integer, they will need to get it right on the first try; the edit server shuts itself off upon receiving an invalid packet.",has Packet.valid,dual-value-comparison
+JED-16,jedit-5.6pre7,http://www.jedit.org/users-guide/vfs-browser.html,"Clicking the Favorites button displays a menu showing all files and directories in the favorites list. The Add to Favorites item adds the currently selected file to the favorites list. If nothing is selected, the current directory is added. To remove a file from the favorites, invoke Edit Favorites, which will show the favorites list in the file system view, then select Delete from the right-click menu of the entry you want to remove.",has Browser.selection,dual-value-comparison
+JED-17,jedit-5.6pre8,http://www.jedit.org/users-guide/closing-exiting.html,"File>Close (shortcut: C+w) closes the current buffer. If it has unsaved changes, jEdit will ask if they should be saved first.",has Buffer.unsavedChanges,dual-value-comparison
+JED-18,jedit-5.6pre9,http://www.jedit.org/users-guide/undo-redo.html,"By default, the last 100 edits is retained; older edits cannot be undone. The maximum number of undos and whether undos are reset when a buffer is saved can be changed in the Editing pane of the Utilities> Options dialog box; see the section called “The Editing Pane”.",editsRetained <= 100,value-comparison
+JED-19,jedit-5.6pre10,http://www.jedit.org/users-guide/words.html,"If there is only one completion, it will be inserted into the buffer immediately.",completionAmount == 1,value-comparison
+JED-20,jedit-5.6pre12,http://www.jedit.org/users-guide/words.html,"If multiple completions were found, the longest common prefix is inserted into the buffer",completionAmount > 1,value-comparison
+JED-21,jedit-5.6pre13,http://www.jedit.org/users-guide/word-wrap.html,"If the margin is set to 0, then the width of the text area window is used to determine where to wrap lines.",jEdit.margin == 0,value-comparison
+JED-22,jedit-5.6pre14,http://www.jedit.org/users-guide/word-wrap.html,"In hard wrap mode, inserting text at the end of a line will automatically break the line if it extends beyond the wrap margin. Inserting or removing text in the middle of a line has no effect, however text can be re-wrapped using the Edit>Text>Format Paragraph command. See the section called “Working With Paragraphs”.",Line.length > wrapMargin,value-comparison
+JED-23,jedit-5.6pre15,http://www.jedit.org/users-guide/cli-usage.html,-log=level | Set the minimum log level to an integer between 1 and 9. Default is 7,default Log.level = 7,concrete-value
+JED-24,jedit-5.6pre16,http://www.jedit.org/users-guide/overview.html,"The drop-down buffer switcher list at the top of each EditPane shows a BufferSet, or a set of open buffers (see the section called “Buffer Sets and closing buffers”). Selecting a buffer on this list will make it visible in the TextArea. Different emblems are displayed next to buffer names in the list, depending the buffer's state; a red disk is shown for buffers with unsaved changes, a lock is shown for read-only buffers, and a spark is shown for new buffers which don't yet exist on disk.",has Buffer.unsavedChanges,dual-value-comparison
+JED-25,jedit-5.6pre17,http://www.jedit.org/users-guide/overview.html,"The drop-down buffer switcher list at the top of each EditPane shows a BufferSet, or a set of open buffers (see the section called “Buffer Sets and closing buffers”). Selecting a buffer on this list will make it visible in the TextArea. Different emblems are displayed next to buffer names in the list, depending the buffer's state; a red disk is shown for buffers with unsaved changes, a lock is shown for read-only buffers, and a spark is shown for new buffers which don't yet exist on disk.",has Buffer.readOnly,dual-value-comparison
+JED-26,jedit-5.6pre18,http://www.jedit.org/users-guide/overview.html,"The drop-down buffer switcher list at the top of each EditPane shows a BufferSet, or a set of open buffers (see the section called “Buffer Sets and closing buffers”). Selecting a buffer on this list will make it visible in the TextArea. Different emblems are displayed next to buffer names in the list, depending the buffer's state; a red disk is shown for buffers with unsaved changes, a lock is shown for read-only buffers, and a spark is shown for new buffers which don't yet exist on disk.",has Buffer.existsOnDisk,dual-value-comparison
+JED-27,jedit-5.6pre19,http://www.jedit.org/users-guide/views.html,"View>Close View closes the current View. If only one View is open, closing it will exit jEdit, unless background mode is on; see Chapter 2, Starting jEdit for information about starting jEdit in background mode.",jEdit.amountOfOpenViews == 1,value-comparison
+JED-28,jedit-5.6pre20,http://www.jedit.org/users-guide/buffersets.html,"The statusbar shows you which BufferSet scope is active (look for the letter ""G"", ""E"" or ""V""). Double-clicking on that will allow you to change the scope without going into global options.","BufferSet.activeScope options are G, E , V",categorical-value
+JED-29,jedit-5.6pre21,http://www.jedit.org/users-guide/starting.html,"If you find yourself launching and exiting jEdit a lot, the startup time can get a bit bothersome. If the -background command line switch is specified, jEdit will continue running and waiting for client requests even after all editor windows are closed. When run in background mode, you can open and close jEdit any number of times, only having to wait for it to start the first time. The downside of this is increased memory usage.",has Command.background,dual-value-comparison
+JED-30,jedit-5.6pre23,http://www.jedit.org/users-guide/saving.html,The Max number of backups setting determines the number of backups to save. Setting this to zero disables the backup feature. Settings this to more than one adds numbered suffixes to file names. By default only one backup is saved.,default jEdit.numberOfBackups = 1,concrete-value
+JED-31,jedit-5.6pre24,http://www.jedit.org/users-guide/saving.html,The Backup filename suffix setting is the suffix that is added to the backed-up file name. This is “~” by default.,default jEdit.backupFilenameSuffix,concrete-value
+JED-32,jedit-5.6pre25,http://www.jedit.org/users-guide/reloading.html,"When a view is brought to the foreground, jEdit checks if any open buffers were modified on disk by another application. All affected buffers are listed in a dialog box. By default, buffers without unsaved changes are automatically reloaded. This feature can be disabled, or changed to prompt if files should be reloaded first, in the General pane of the Utilities>Options dialog box; see the section called “The Global Options Dialog Box”.",has Buffer.isModified,dual-value-comparison
+JED-33,jedit-5.6pre26,http://www.jedit.org/users-guide/word-wrap.html,"If end of line markers are enabled in the Text Area pane of the Utilities>Options dialog box, a special character (“↩”) is painted at the end of wrapped lines. If you are using a font that can not display it, or wish to use a different character, you can jEdit.setProperty(""view.eolMarkerChar"", ""↩""); from the Console beanshell and you will see it after a restart of jEdit. To enable/disable or change its color, see the section called “The Text Area Pane”.",has jEdit.endOfLineMarkers,dual-value-comparison
+JTI-1,joda_time-2.10.3,https://www.joda.org/joda-time/cal_ethiopic.html,"The Ethiopic calendar system consists of 12 months of exactly 30 days, followed by a 5 or 6 day intercalary month making a year of 365 or 366 days. Leap years (6 day intercalary month) occur every 4 years without exception (as per the Julian calendar). They occur when the remainder left after dividing the Ethiopic year by four is 3. The Ethiopic year starts on Septamber 11th/12th depending on leap years. The epoch date for the calendar is 0008-08-29 (Julian), which therefore is 0001-01-01 (Ethiopic). The current era is 'EE' (Ethiopian Era).",Sets value of epoch to 0008-08-29 (Julian),concrete-value
+JTI-2,joda_time-2.10.8,https://www.joda.org/joda-time/cal_ethiopic.html,Joda-Time implements the rules described above. We model the 5 or 6 day intercalary month as month 13. We also prevent the entry of dates before year 1.,Checks/Enforces that year > 1,value-comparison
+JTI-3,joda_time-2.10.9,https://www.joda.org/joda-time/cal_gj.html,"The GregorianJulian calendar is a combination of two separate calendar systems, the Gregorian and the Julian. The switch from one to the other occurs at a configurable date. The default date is 1582-10-15, as defined by Pope Gregory XIII.",Sets default value of cutoff date to 1582-10-15,concrete-value
+JTI-4,joda_time-2.10.10,https://www.joda.org/joda-time/cal_islamic.html,"The definition of a leap year in the Islamic calendar varies. All agree on a 30 year cycle, however which years within the 30 are leap varies by the leap year pattern:
+...
+15-based | 2, 5, 7, 10, 13, 15, 18, 21, 24, 26, 29","Checks that year is in set 2, 5, 7, 10, 13, 15, 18, 21, 24, 26, 29",categorical-value
+JTI-5,joda_time-2.10.11,https://www.joda.org/joda-time/cal_islamic.html,"Joda-Time allows you to choose between these leap year patterns. The 16-based algorithm is the most commonly used, and is the default. Note that Microsoft uses the 15-based pattern, and calls it the 'Kuwaiti algorithm'.",Sets default value of algorithm to 16-based,concrete-value
+JTI-6,joda_time-2.10.12,https://www.joda.org/joda-time/cal_islamic.html,The epoch of the calendar system is 0622-07-16 (Julian) which is therefore 0001-01-01 (Islamic). The current (and only implemented) era is 'AH' (Anno Hegirae).,Sets value of epoch to 0622-07-16 (Julian),concrete-value
+JTI-7,joda_time-2.10.13,https://www.joda.org/joda-time/field.html#millisOfSecond,"The fields are explained in more detail below (for the GJChronology):
+...
+millisOfSecond | 0 | 999",Checks/Enforces that millisOfSecond is in range 0 – 999,value-comparison
+JTI-8,joda_time-2.10.14,https://www.joda.org/joda-time/cal_iso.html,"This format of ISO8601 has the following fields:
+...
+two digit week of year, from 01 to 53",Checks/Enforces that week of year is < 53,value-comparison
+JTI-9,joda_time-2.10.15,https://www.joda.org/joda-time/userguide.html#Intervals,"Intervals are implemented as half-open, which is to say that the start instant is inclusive but the end instant is exclusive. The end is always greater than or equal to the start. Both end-points are restricted to having the same chronology and the same time zone.",Checks/Enforces that the end is greater or equal than the start,value-comparison
+JTI-10,joda_time-2.10.4,https://www.joda.org/joda-time/cal_coptic.html,"The Coptic calendar system consists of 12 months of exactly 30 days, followed by a 5 or 6 day intercalary month making a year of 365 or 366 days. Leap years (6 day intercalary month) occur every 4 years without exception (as per the Julian calendar). They occur when the remainder left after dividing the Coptic year by four is 3. The Coptic year starts on Septamber 11th/12th depending on leap years. The epoch date for the calendar is 0284-08-29 (Julian), which therefore is 0001-01-01 (Coptic). The current era is 'AM' (Anno Martyrum or Year of the Martyrs).",Checks that remainder is equal to 3,value-comparison
+JTI-11,joda_time-2.10.5,https://www.joda.org/joda-time/cal_coptic.html,Joda-Time implements the rules described above. We model the 5 or 6 day intercalary month as month 13. We also prevent the entry of dates before year 1.,Checks/Enforces that year > 1,value-comparison
+JTI-12,joda_time-2.10.6,https://www.joda.org/joda-time/cal_coptic.html,"The Coptic calendar system consists of 12 months of exactly 30 days, followed by a 5 or 6 day intercalary month making a year of 365 or 366 days. Leap years (6 day intercalary month) occur every 4 years without exception (as per the Julian calendar). They occur when the remainder left after dividing the Coptic year by four is 3. The Coptic year starts on Septamber 11th/12th depending on leap years. The epoch date for the calendar is 0284-08-29 (Julian), which therefore is 0001-01-01 (Coptic). The current era is 'AM' (Anno Martyrum or Year of the Martyrs).",Sets value of epoch to 0284-08-29 (Julian),concrete-value
+JTI-13,joda_time-2.10.7,https://www.joda.org/joda-time/field.html#millisOfSecond,"The fields are explained in more detail below (for the GJChronology):
+...
+dayOfWeek | 1 (Monday) | 7 (Sunday)",Checks/Enforces that dayOfWeek is in range 1 – 7,categorical-value
+RHI-1,rhino-1.6R5,7.2,"The following characters are considered to be white space:
+
+Code Point Value | Name | Formal Name
+\u0009 | Tab | <TAB>
+\u000B | Vertical Tab | <VT>
+\u000C | Form Feed | <FF>
+\u0020 | Space | <SP>
+\u00A0 | No-break space | <NBSP>
+Other category “Zs” | Any other Unicode “space separator” | <USP>","WhiteSpace choices are: Tab, Vertical Tab, Form Feed, Space, NBSP, Any unicode “Z”",categorical-value
+RHI-2,rhino-1.6R16,8.1,"The Undefined type has exactly one value, called undefined. Any variable that has not been assigned a value has the value undefined.",Variable default value is “Undefined”,concrete-value
+RHI-3,rhino-1.6R20,7.4,"Because a single-line comment can contain any character except a LineTerminator character, and because
+of the general rule that a token is always as long as possible, a single-line comment always consists of all
+characters from the // marker to the end of the line. However, the LineTerminator at the end of the line is
+not considered to be part of the single-line comment; it is recognised separately by the lexical grammar and
+becomes part of the stream of input elements for the syntactic grammar. This point is very important,
+because it implies that the presence or absence of single-line comments does not affect the process of
+automatic semicolon insertion (7.9).",CharacterInComment != line terminator,value-comparison
+RHI-4,rhino-1.6R21,8.6.2.2,"When the [[Put]] method of O is called with property P and value V, the following steps are taken:
+...
+3. If O doesn’t have a property with name P, go to step 6.",Object has no property P,dual-value-comparison
+RHI-5,rhino-1.6R22,8.6.2.3,"When the [[CanPut]] method of O is called with property P, the following steps are taken:
+...
+2. If the property has the ReadOnly attribute, return false.",Property.ReadOnly = true,dual-value-comparison
+RHI-6,rhino-1.6R23,8.6.2.3,"When the [[CanPut]] method of O is called with property P, the following steps are taken:
+...
+4. If the [[Prototype]] of O is null, return true.",Object.prototype = null,dual-value-comparison
+RHI-7,rhino-1.6R24,8.6.2.4,"When the [[HasProperty]] method of O is called with property name P, the following steps are taken:
+...
+2. If the [[Prototype]] of O is null, return false.",Object.prototype = null,dual-value-comparison
+RHI-8,rhino-1.6R25,8.6.2.5,"When the [[Delete]] method of O is called with property name P, the following steps are taken:
+...
+2. If the property has the DontDelete attribute, return false.",Property.DontDelete = true,dual-value-comparison
+RHI-9,rhino-1.6R26,8.7.1,"GetValue (V)
+...
+3. If Result(2) is null, throw a ReferenceError exception.",Reference.base == null,value-comparison
+RHI-10,rhino-1.6R6,9.2,"The operator ToBoolean converts its argument to a value of type Boolean according to the following table:
+...
+Number | The result is false if the argument is +0, −0, or NaN; otherwise the result is true.",arg == +0,value-comparison
+RHI-11,rhino-1.6R7,9.2,"The operator ToBoolean converts its argument to a value of type Boolean according to the following table:
+...
+Number | The result is false if the argument is +0, −0, or NaN; otherwise the result is true.",arg == -0,value-comparison
+RHI-12,rhino-1.6R8,9.2,"The operator ToBoolean converts its argument to a value of type Boolean according to the following table:
+...
+Number | The result is false if the argument is +0, −0, or NaN; otherwise the result is true.",arg = NaN,value-comparison
+RHI-13,rhino-1.6R9,9.2,"The operator ToBoolean converts its argument to a value of type Boolean according to the following table:
+...
+Undefined | false",arg == Undefined,value-comparison
+RHI-14,rhino-1.6R10,9.3,"The operator ToNumber converts its argument to a value of type Number according to the following table:
+...
+Undefined | NaN",arg = Undefined,value-comparison
+RHI-15,rhino-1.6R11,7.5.2,"The following tokens are ECMAScript keywords and may not be used as identifiers in ECMAScript programs.
+
+Keyword :: one of: break, else, new, var, case, finally, return, void, catch, for, switch, while, continue, function, this, with, default, if, throw, delete, in, try, do, instanceof, typeof","Keyword choices are: break, else, new, var, case, finally, return, void, catch, for, switch, while, continue, function, this, with, default, if, throw, delete, in, try, do, instanceof, typeof",categorical-value
+RHI-16,rhino-1.6R12,9.3,"The operator ToNumber converts its argument to a value of type Number according to the following table:
+...
+The result is 1 if the argument is true. The result is +0 if the argument is false.",arg = true,dual-value-comparison
+RHI-17,rhino-1.6R13,9.4,"The operator ToInteger converts its argument to an integral numeric value. This operator functions as
+follows:
+...
+2. If Result(1) is NaN, return +0.",ResultOfToNumber == NaN,value-comparison
+RHI-18,rhino-1.6R14,9.4,"The operator ToInteger converts its argument to an integral numeric value. This operator functions as
+follows:
+...
+3. If Result(1) is +0, −0, +∞, or −∞, return Result(1).",ResultOfToNumber == +Infinity,value-comparison
+RHI-19,rhino-1.6R15,9.8,"The operator ToString converts its argument to a value of type String according to the following table:
+...
+Undefined | “undefined”",arg == Undefined,value-comparison
+RHI-20,rhino-1.6R17,7.8.2,"The value of the Boolean literal true is a value of the Boolean type, namely true.","Choices for boolean are: true, false",categorical-value
+RHI-21,rhino-1.6R18,9.5,"The operator ToInt32 converts its argument to one of 2 32 integer values in the range −2 31 through 231−1,
+inclusive. This operator functions as follows:
+...
+2. If Result(1) is NaN, +0, −0, +∞, or −∞, return +0.",ResultOfToNumber == +0,value-comparison
+RHI-22,rhino-1.6R19,9.8,"The operator ToString converts its argument to a value of type String according to the following table:
+...
+3. If m is less than zero, return the string concatenation of the string ""-"" and ToString(−m).",Number < 0,value-comparison
+SWA-1,swarm-2.8.11,3.3.5.2,"The Japanese WIN format does not contain station or time zone information. This information can be
+provided through a configuration file that Swarm will prompt for when opening WIN files. By default,
+the file open dialog will filter on .config extension but the configuration file can be called anything and
+located anywhere. The first line of the file must contain the time zone, followed by the name for each
+channel in the files. If specified time zone is not valid it will default to ‘GMT’. If configuration file is not
+available or readable it will default to ‘UTC’. Abbreviations may work, but it is recommended to use the
+full time zone name (e.g. Americas/New_York, Atlantic/Reykjavik).",ConfigurationFile.unavailable = true,dual-value-comparison
+SWA-2,swarm-2.8.22,4.3,"Other information shown:
+• Y-axis value if in Wave view
+• Frequency and Power in Spectra view
+• Frequency in Spectrogram view",Window.mode = WaveView,value-comparison
+SWA-3,swarm-2.8.31,4.4.1.1,"Axes
+...
+X is the number of minutes to display along the bottom of the helicorder. Default is 15 minutes.",Default value of Minutes is 15,concrete-value
+SWA-4,swarm-2.8.32,4.4.1.4,"Other
+...
+Refresh is the number of seconds between attempts to refresh the helicorder with the latest data. The default value is 15.",Default value of Refresh is 15,concrete-value
+SWA-5,swarm-2.8.33,5.2.2,"Wave Options
+...
+Remove bias will remove the mean value from the wave if on. It is enabled by default.",RemoveBias default value is true,concrete-value
+SWA-6,swarm-2.8.34,5.2.3,"Spectra Options
+...
+While SWARM will allow the maximum frequency to be set to any positive value greater than the minimum frequency, this value will adjust automatically if it is greater than the Nyquist frequency of the wave being manipulated.",MaximumFrequency > NyquistFrequency,value-comparison
+SWA-7,swarm-2.8.35,5.2.3,"Spectra Options
+...
+Log Power, if checked, will set the power axis to log mode.",LogPower.checked = true,dual-value-comparison
+SWA-8,swarm-2.8.36,5.2.3,"Spectra Options
+...
+Auto scale y-axis to scale y-axis automatically.",AutoScaleYAxis.enabled = true,dual-value-comparison
+SWA-9,swarm-2.8.37,5.2.3,"Spectra Options
+...
+Manual scale y-axis to scale y-axis manually.",ManualScaleYAxis.enabled = true,dual-value-comparison
+SWA-10,swarm-2.8.12,5.2.4,"Spectrogram Options
+...
+While SWARM will allow the maximum frequency to be set to any positive value greater than the minimum frequency, this value will adjust automatically if it is greater than the Nyquist frequency of the wave being manipulated.",MaximumFrequency > NyquistFrequency,value-comparison
+SWA-11,swarm-2.8.13,5.2.4,"Spectrogram Options
+...
+Log Power, if checked, will set the power scale to log mode.",LogPower.checked = true,dual-value-comparison
+SWA-12,swarm-2.8.14,5.2.4,"Spectrogram Options
+...
+Auto scale power to scale power automatically.",AutoScalePower.enabled = true,dual-value-comparison
+SWA-13,swarm-2.8.15,5.2.4,"Spectrogram Options
+...
+Power range to use if manual scale power is enabled. This determines the minimum and
+maximum to use on the color scale if power is scaled manually.",ManualScalePower.enabled = true,dual-value-comparison
+SWA-14,swarm-2.8.16,5.2.5,"Butterworth Filter
+...
+Enabled checkbox will turn Butterworth filtering on and off.",ButterworthFiltering.enabled = true,dual-value-comparison
+SWA-15,swarm-2.8.17,5.2.5,"Butterworth Filter
+...
+Zero phase shift option runs the specified filter both forward and backward. This eliminates any
+phase shift effects due to the filter at the expense of effectively doubling the filter order.",ZeroPhaseShift.enabled = true,dual-value-comparison
+SWA-16,swarm-2.8.18,6.2,"When the
+button is enabled, users are able to make picks for P and S times, and coda start and end
+times in the wave and spectrogram view for each panel. To make a pick, right click over the desired pick
+time in the appropriate channel, go down the Pick menu, and select the desired pick type.
+Locating origin is not yet supported in Swarm.",PickModeIcon.enabled = true,dual-value-comparison
+SWA-17,swarm-2.8.19,6.2.1,"When doing a P or S pick, users must traverse all the way down the menu tree to determine onset
+(Emergent or Impulsive), polarity, and weight (0 to 4) of the pick. The weight selected will be applied as
+the lower and upper uncertainty. The amount of time represented by each weight is dependent on each
+user’s pick settings. See section 6.2.3.16.2.3 for more information on pick settings. Once a pick is made,
+a vertical line will display over the pick time, along with a tag indicating the phase, onset, and polarity.
+The uncertainty times will be highlighted.","Onset must be one of: Emergent, Impulsive",categorical-value
+SWA-18,swarm-2.8.20,6.2.1,"When doing a P or S pick, users must traverse all the way down the menu tree to determine onset
+(Emergent or Impulsive), polarity, and weight (0 to 4) of the pick. The weight selected will be applied as
+the lower and upper uncertainty. The amount of time represented by each weight is dependent on each
+user’s pick settings. See section 6.2.3.16.2.3 for more information on pick settings. Once a pick is made,
+a vertical line will display over the pick time, along with a tag indicating the phase, onset, and polarity.
+The uncertainty times will be highlighted.",Pick.weight <= 4,value-comparison
+SWA-19,swarm-2.8.21,6.2.3,"When Pick Mode is enabled, a Pick Menu is displayed to the right of the pick button. Un-toggling the
+pick button will hide the Pick Menu again.",PickMode.enabled = true,dual-value-comparison
+SWA-20,swarm-2.8.23,6.2.4.2,"Users can provide input to Hypo71 locating algorithm in two ways, through clipboard picks or Hypo71
+input file. The recommended way to do earthquake locating is through picks in Swarm. Make at least 1
+pick in the clipboard to enable the Use Clipboard Picks option. In order to perform locating using picks,
+note the following:",AmountOfPicks > 0,value-comparison
+SWA-21,swarm-2.8.24,6.3,"If the clipboard is in Pick Mode, the third line will display:",Clipboard.isInPickMode = true,dual-value-comparison
+SWA-22,swarm-2.8.25,8,"Clicking on
+at the bottom of the Data Chooser window will open real-time wave viewer. The white
+area to the right shows the lag between now and the last available data at the time of refresh (which
+occurs every two seconds.) It is possible to switch between views of 15, 30, 60, 120 (default), 180, 240,
+or 300 seconds. The time displayed is UTC. Each wave is in its own window.",Default View value is 120,concrete-value
+SWA-23,swarm-2.8.26,9.2.1,"Event Options
+...
+Event ratio – The minimum ratio between current and previous value to define event. I.e. current value >= (previous value * event ration)",CurrentValue >= previousValue * eventRatio,value-comparison
+SWA-24,swarm-2.8.27,3.3.5.2,"The Japanese WIN format does not contain station or time zone information. This information can be
+provided through a configuration file that Swarm will prompt for when opening WIN files. By default,
+the file open dialog will filter on .config extension but the configuration file can be called anything and
+located anywhere. The first line of the file must contain the time zone, followed by the name for each
+channel in the files. If specified time zone is not valid it will default to ‘GMT’. If configuration file is not
+available or readable it will default to ‘UTC’. Abbreviations may work, but it is recommended to use the
+full time zone name (e.g. Americas/New_York, Atlantic/Reykjavik).",Dialog.fileFilter is “.config” by default,concrete-value
+SWA-25,swarm-2.8.28,5.2.5,"Butterworth Filter
+...
+Order slider bar sets the order of the filter as even values between 2 and 8, inclusive. In general,
+the higher the order the steeper the cutoff at the corner frequencies.",OrderSliderBar.value < 8,value-comparison
+SWA-26,swarm-2.8.29,9.2.1,"Bin Size – Users may choose varying bin size between a minute to a year. The bar graph in Event view will display the number of events per bin size, e.g. hour, day, month, etc.","BinSize choices are: hour, day, month...",categorical-value
+SWA-27,swarm-2.8.30,10.9,"The comma-separated fields are defined as follows:
+...
+6. South latitude extent (-90 to 90)",SouthLatitudeExtent >= -90,value-comparison
+UML-1,argouml-0.35.4,8.1,"The current filename. If no filename for the project is set yet, then the titlebar shows ""Unititled""",Checks that the current project has no filename set,dual-value-comparison
+UML-2,argouml-0.35.15,10.3.6,"If the model has been altered (as indicated by the ""*"" in the titlebar of ArgoUML's window), then activating the ""Import XMI..."" function is potentionally not the user's intention",Checks that the model has been altered,dual-value-comparison
+UML-3,argouml-0.35.25,10.3.8,"The first of the two tabs is labeled General and is selected by button 1 click on its tab. It provides a
+combo box for the language selection (in V0.18 of ArgoUML only Java can be chosen), and the follow-
+ing selections:
+...
+Changed/new files only. If enabled (the default), only changed and new files are imported. If not all classes will be replaced.",Sets/Enforces the default value for 'Changed/new files only' to true,concrete-value
+UML-4,argouml-0.35.26,10.3.8,"The first of the two tabs is labeled General and is selected by button 1 click on its tab. It provides a
+combo box for the language selection (in V0.18 of ArgoUML only Java can be chosen), and the follow-
+ing selections:
+...
+Create diagrams from imported code. If you unselect this, then no diagrams are created, i.e. all data will only be visible in the explorer.",Checks that 'create diagrams from existing code' is enabled,dual-value-comparison
+UML-5,argouml-0.35.27,10.3.8,"The first of the two tabs is labeled General and is selected by button 1 click on its tab. It provides a
+combo box for the language selection (in V0.18 of ArgoUML only Java can be chosen), and the follow-
+ing selections:
+...
+Minimise Class icons in diagrams. If enabled, then the attributes and operations compartiments will not be shown in the classes on the generated class diagrams. Note: This item is checked by default, and is overseen by many users, which are then surprised by the result.",Checks that 'Minimize Class icons in diagrams' is enabled,dual-value-comparison
+UML-6,argouml-0.35.28,8.1,"An asterisk (*). This item is only present if the current project file is “dirty”, i.e. it is altered, but not yet saved. In other words, if the asterisk is absent, then the current file has not been altered.",Checks/Enforces that asterisk only appears when project is modified but not saved,dual-value-comparison
+UML-7,argouml-0.35.29,10.3.8,"The first of the two tabs is labeled General and is selected by button 1 click on its tab. It provides a
+combo box for the language selection (in V0.18 of ArgoUML only Java can be chosen), and the follow-
+ing selections:
+...
+Minimise Class icons in diagrams. If enabled, then the attributes and operations compartiments will not be shown in the classes on the generated class diagrams. Note: This item is checked by default, and is overseen by many users, which are then surprised by the result.",Sets/Enforces the default value for 'Minimise Class icons in diagrams' to true,concrete-value
+UML-8,argouml-0.35.30,10.3.14,"The Project Description field may contain any text that you need to describe the project. By default it
+is empty.",Sets/Enforces the default value for 'Project description' as empty,concrete-value
+UML-9,argouml-0.35.31,10.3.14,"In the Notations tab, you are able to set the following fields:
+...
+Use guillemots (« ») for stereotypes (clear by default). By default ArgoUML uses pairs of less than and greater than (<< >>) characters for stereotypes. If this box is checked stereotypes on diagrams are shown between true guillemots (« »)",Sets/Enforces the default value for 'Use guillemots' to false,concrete-value
+UML-10,argouml-0.35.5,10.3.14,"In the Notations tab, you are able to set the following fields:
+...
+Show visibility (clear by default). If this is selected, then ArgoUML will show the visibility
+indicators in front of e.g. attributes in the diagram. In UML the notation is ""+"" for public, ""-"" for
+private, ""#"" for protected, and ""~"" for package. E.g. for an attribute, it may show: +newAttr :
+int.",Sets/Enforces the default value for 'Show visibility' to false,concrete-value
+UML-11,argouml-0.35.6,10.3.14,"In the Notations tab, you are able to set the following fields:
+...
+Show visibility (clear by default). If this is selected, then ArgoUML will show the visibility indicators in front of e.g. attributes in the diagram. In UML the notation is ""+"" for public, ""-"" for private, ""#"" for protected, and ""~"" for package. E.g. for an attribute, it may show: +newAttr : int.",Checks that 'Show visibility' is enabled,dual-value-comparison
+UML-12,argouml-0.35.7,10.3.14,"In the Notations tab, you are able to set the following fields:
+...
+Show multiplicity (clear by default). If this is selected, then ArgoUML will show the multiplicity of e.g. attributes in the diagram. In UML notation, the multiplicity is shown between [], such as: +newAttr [0..*] : int",Sets/Enforces 'Show multiplicity' to be false by default,concrete-value
+UML-13,argouml-0.35.8,10.3.14,"In the Notations tab, you are able to set the following fields:
+...
+Show multiplicity (clear by default). If this is selected, then ArgoUML will show the multiplicity of e.g. attributes in the diagram. In UML notation, the multiplicity is shown between [], such as: +newAttr [0..*] : int",Checks that 'Show multiplicity' is enabled,dual-value-comparison
+UML-14,argouml-0.35.9,10.3.14,"In the Notations tab, you are able to set the following fields:
+...
+Show properties (clear by default). If this is selected, then ArgoUML will show various properties between braces {}. E.g. for an attribute, it may show: +newAttr : int { frozen }.",Sets/Enforces the default value for 'Show properties' to false,concrete-value
+UML-15,argouml-0.35.10,10.3.14,"In the Notations tab, you are able to set the following fields:
+...
+Show properties (clear by default). If this is selected, then ArgoUML will show various properties between braces {}. E.g. for an attribute, it may show: +newAttr : int { frozen }.",Checks that 'Show properties' is enabled,dual-value-comparison
+UML-16,argouml-0.35.11,10.3.14,"In the Notations tab, you are able to set the following fields:
+...
+Show types and parameters (set by default). When this checkbox is unmarked, attributes in classes are shown without type indication, and operations are shown without parameters",Checks that 'Show types and parameters' is enabled,dual-value-comparison
+UML-17,argouml-0.35.12,10.3.14,"In the Notations tab, you are able to set the following fields:
+...
+Default shadow width (set to 1 by default). ArgoUML is able to draw all elements on a dia-
+gram with a shadow, for esthetical reasons. Use this setting to adjust the size of the shadow, used
+when the modelelement is created. The details tab ""Presentation"" allows to set the shadow per
+modelelement, after they are created, but ArgoUML V0.22 does not retain this latter change after
+save and load.",Sets/Enforces the default value of 'Shadow width' to 1,concrete-value
+UML-18,argouml-0.35.13,17.8.3,"Discriminator
+
+Text box. The name of a discriminator for the specialization. UML 1.4 allows grouping of specializ-
+ations into a number of sets, on the basis of this value.
+
+The empty string “” is a valid entry (and the default) for this field.",Sets/Enforces the default value for 'Discriminator' to the empty string,concrete-value
+UML-19,argouml-0.35.14,18.2.3,"Visibility
+Radio box, with four entries public, private, protected, and package. Indicates whether
+the package is visible outside the package.","Checks/Enforces that the value of 'Visibility' is one of public, private, protected, package",categorical-value
+UML-20,argouml-0.35.16,18.6.3,"Visibility
+Radio box, with four entries public, private, protected, and package. Indicates whether the class is visible outside the namespace.","Checks/Enforces value of visibility to be one of: public, private, protected, package",categorical-value
+UML-21,argouml-0.35.17,18.7.3,"Changeability
+Radio box, with entries addOnly, changeable, and frozen.","Checks/Enforces that changeability is one of addOnly, changeable, and frozen",categorical-value
+UML-22,argouml-0.35.18,10.3.2,"Beneath this is a drop down selector labeled Files of type: to specify a filter on the files to be
+shown in the directory listing. Only files that match the filter are listed. The available filters are listed
+below. The default filter is the first one, which combines all available formats.
+• ArgoUML file (*.zargo, *.uml, *.xmi, *.xml, *.zip)","Sets/Enforces default filter to be 'ArgoUML file (*.zargo, *.uml, *.xmi, *.xml, *.zip)'",concrete-value
+UML-23,argouml-0.35.19,10.3.11,"The dialog box is identical to that for Open Project (see Figure 10.2, “ The file selection dialog for
+Open Project.... ”), except for the Files of type:. The chosen filetype specifies the graph-
+ics format used for saving. The filename is automatically extended with the corresponding ending (if not
+entered already). A default filename is generated based on the diagram name.",Checks that file ending is not entered already,dual-value-comparison
+UML-24,argouml-0.35.20,10.3.14,"The first field contains the name of the author or responsible for the current project. By default the
+name and email of the creator are filled in, so probably you will never need to edit this, but it is pos-
+sible.",Sets/Enforces the default value for 'Name',concrete-value
+UML-25,argouml-0.35.21,10.3.16,"This closes down ArgoUML. A warning message will pop-up if you have a project open with unsaved changes asking if you wish to save it. See Figure 10.13, “ The save changes dialog. ”",Checks that there are unsaved changes in the project,dual-value-comparison
+UML-26,argouml-0.35.22,18.2.3,By default a new package has no name defined. The package will appear with the name (Unnamed Package) in the explorer.,Sets/Enforces the default value of package name is (Unnamed Package),concrete-value
+UML-27,argouml-0.35.23,18.6.1,"Presentation
+Standard tab. The tick boxes, Attributes and Operations allow the attributes and operations
+compartments to be shown (the default) or hidden. This is a setting valid for only the current dia-
+gram that shows the class. The editable Bounds field defines the bounding box for the package on
+the diagram.",Sets/Enforces 'Attributes' checkbox to be enabled by default,concrete-value
+UML-28,argouml-0.35.24,18.7.3,"Multiplicity
+Editable drop down selector with checkmark. The default value (1) is that there is one instance of
+this attribute for each instance of the class, i.e. it is a scalar. The drop down provides a number of
+commonly used specifications for non-scalar attributes.",Sets/Enforces 'Multiplicity' to be 1,concrete-value

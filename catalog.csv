@@ -1,0 +1,34 @@
+Code,Description,Count,Part 1,Part 2,Part 3,Enforcing statement
+boolean-property,A variable of type Boolean is checked in a Boolean expression,49,variable,,,Boolean expression
+binary-comparison,"Two variables are compared using one of the relational operators (equals, does not equal, greater than, less than, greater than or equal to, less than or equal to). Use of the equals method is considered an operator in this case. The types of the operands may be of any type for which these operations are allowed (e.g., greater than cannot be applied to Boolean values)",46,variable,op,variable,Relational expression
+constant-argument,A literal value is passed as a parameter to a method call,20,method,constant,,Method call
+null-check,A nullable variable is tested for nullity using the == or != operators. The null keyword is not considered a part of the pattern because it will always appear in instances of it,15,variable,,,Relational expression
+assign-constant,A literal value is assigned to a variable,9,variable,constant,,Assignment
+binary-flag-check,An integer variable is used as a bit field and checked with a bitwise operator against a constant integer,5,variable,constant,,Relational expression
+if-chain,"A chain of ifs is used like a switch on a variable, checking against its possible values. Each if clause uses the == operator or equals method",5,variable,,,If statement
+equals-or-chain,Equality expressions (or equals method calls) are chained by or operators in an expression checking possible values of a variable,4,variable,,,Boolean expression
+properties-file,The value for a variable is stored in a file,3,constant,,,File line
+polymorphic-method,Conditional branching is achieved by calling a method in a superclass that is overridden in a subclass,2,method,,,Method call
+null-empty-check,"A string value is checked for nullity using the == or != operators and then compared to empty string using the equals method. The first expression is a null-check pattern, but for null-empty-check to apply, both expressions must be present",2,variable,,,Boolean expression
+null-zero-check,"A value is checked for nullity using the ==, !=, or equals operators and then its length or other numeric property is compared to zero. The first expression is a null-check pattern, but for null-zero-check to apply, both expressions must be present",2,variable,,,Boolean expression
+self-comparison,A variable is compared to itself,2,variable,,,Relational expression
+return-constant,Return a literal value,2,constant,,,Return statement
+switch-len-char,A switch is done first on the length of a string and then on specific characters to determine which of the options corresponds to the input string,2,variable,,,Switch statement
+str-starts,The startsWith method is called on a string variable,1,variable,,,Method call
+null-boolean-check,"A boolean value is checked for nullity using the == or != operators and then a boolean property of the variable is checked. The first expression is a null-check pattern, and the second is a boolean-property, but for null-boolean-check to apply, both expressions must be present",1,variable,,,Boolean expression
+setter,A setter method is used to assign a value to a field,1,method,variable,,Method call
+constructor-assign,"A field is initialized in a constructor or builder method, but not using any of the parameters",1,field,,,Assignment
+delta-check,Two variables are subtracted and their difference is compared to 0,1,variable,variable,,"Arithmetic expression
+Boolean expression"
+enum-valueof,The method valueOf of an enum is used to ensure that a string variable represents a valid member of the Enum,1,variable,,,Method call
+iterate-and-check-literal,The value of the variable is checked by iterating over a collection of possible values and checking equality for each one. The value of this collection comes from a literal,1,variable,collection,,Loop statement
+mod-op,Restricts the values that a variable can take to the possible remainders of a division,1,variable,,,Arithmetic expression
+str-ends,The endsWith method is called on a string variable,1,variable,,,Method call
+switch-case,One of the cases of the switch checks the value (switch variable is of type enum),1,variable,,,Case statement
+override-value-set,Each allowable value for a set is defined as the return value of the override of an abstract method,1,method,,,Method Definition
+cast-self-comparison,A numeric variable is cast to another type and then compared to the original variable,1,variable,,,"Assignment
+Boolean expression"
+index-loop-find,"Iterate over collection of possible values. If the variable matches at some point, return the index. Otherwise return -1 at the end",1,collection,variable,,"Loop statement
+Return statement"
+assign-class-call,Assigns a value derived from a method call on the result of a .class construct,1,variable,,,Assignment
+if-return-chain,"A chain of ifs is used like a switch on a field, checking against the possible values of the variable. There are no else blocks and the body of each if is a return statement",1,variable,,,If statement
