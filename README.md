@@ -8,4 +8,6 @@ Replication package for EMSE submission.
  3. `links.csv`: Manual and tool-assisted links.
  4. `data`: Source code and textual artifacts of the studied systems.
  5. `training`: Training materials for tracers.
+ 6. `questionnaires`: The four questionnaires used to conduct the developer study.
+ 7. `protocol`: Protocol for extraction of data constraints from textual artifacts.
 
