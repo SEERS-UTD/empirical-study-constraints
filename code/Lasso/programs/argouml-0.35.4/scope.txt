@@ -1,0 +1,14 @@
+Primordial,Java,stdlib,none
+Primordial,Java,jarFile,primordial.jar.model
+Application,Java,jarFile,programs/argouml-0.35.4/argouml.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argo_java.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-euml.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-mdr.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-model.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-diagrams-activity.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-diagrams-deployment.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-diagrams-sequence.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-diagrams-state.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-notation.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-transformer.jar
+Application,Java,jarFile,programs/argouml-0.35.4/argouml-umlpropertypanels.jar

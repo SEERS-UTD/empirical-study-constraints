@@ -1,0 +1,7 @@
+# Default ignored files
+/.idea
+/.gradle
+build/
+out/
+/programs/**/*.json
+/programs/sample/sample.jar

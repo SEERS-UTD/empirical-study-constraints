@@ -1,0 +1,190 @@
+ID,System,Type,Pattern,Enforcing Statement,Part 1,Part 2,Part 3
+ANT-1,apache-ant-1.10.6,dual-value-comparison,boolean-property,src/main/org/apache/tools/ant/taskdefs/Copy.java:875,org.apache.tools.ant.taskdefs.Copy#filtering,,
+ANT-2,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/Main.java:824,!org.apache.tools.ant.Main#targets#isEmpty,,
+ANT-3,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/types/resources/BaseResourceCollectionContainer.java:256,org.apache.tools.ant.types.resources.BaseResourceCollectionContainer#cache,,
+ANT-4,apache-ant-1.10.6,concrete-value,assign-constant,org/apache/tools/ant/types/Path.java:150,org.apache.tools.ant.types.Path#cache,0,
+ANT-5,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/Main.java:470,!org.apache.tools.ant.Main#buildFile#exists,,
+ANT-6,apache-ant-1.10.6,dual-value-comparison,binary-comparison,org/apache/tools/ant/Main.java:333,org.apache.tools.ant.Main#processArgs#arg,eq,-verbose
+ANT-7,apache-ant-1.10.6,concrete-value,constant-argument,org/apache/tools/ant/XmlLogger.java:180,org.apache.tools.ant.XmlLogger#getProperty,log.xsl,
+ANT-8,apache-ant-1.10.6,dual-value-comparison,binary-comparison,org/apache/tools/ant/taskdefs/DependSet.java:254,org.apache.tools.ant.types.Resource#getLastModified,gte,org.apache.tools.ant.types.Resource#getLastModified
+ANT-9,apache-ant-1.10.6,value-comparison,null-check,org/apache/tools/ant/taskdefs/DependSet.java:200,org.apache.tools.ant.taskdefs.DependSet#sources,,
+ANT-10,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/taskdefs/Unpack.java:141,!org.apache.tools.ant.taskdefs.Unpack#dest#isDirectory,,
+ANT-11,apache-ant-1.10.6,dual-value-comparison,null-check,org/apache/tools/ant/taskdefs/Unpack.java:133,org.apache.tools.ant.taskdefs.Unpack#dest,,
+ANT-12,apache-ant-1.10.6,dual-value-comparison,equals-or-chain,org/apache/tools/ant/Project.java:1722,"!org.apache.tools.ant.RuntimeConfigurable#maybeConfigure(org.apache.tools.ant.Project, boolean)#entry#getValue",,
+ANT-13,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/taskdefs/Javac.java:911,org.apache.tools.ant.taskdefs.Javac#isForkedJavac,,
+ANT-14,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/taskdefs/Zip.java:729,org.apache.tools.ant.taskdefs.Zip#doUpdate,,
+ANT-15,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/taskdefs/Jar.java:491,org.apache.tools.ant.taskdefs.Jar#createManifest#mergeFileSetFirst,,
+ANT-16,apache-ant-1.10.6,concrete-value,assign-constant,org/apache/tools/ant/taskdefs/Jar.java:186,org.apache.tools.ant.taskdefs.Zip#emptyBehavior,create,
+ANT-17,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/taskdefs/Java.java:149,org.apache.tools.ant.taskdefs.Java#fork,,
+ANT-18,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/taskdefs/Java.java:223,org.apache.tools.ant.taskdefs.Java#fork,,
+ANT-19,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/types/CommandlineJava.java:517,org.apache.tools.ant.types.CommandlineJava#isCloneVm,,
+ANT-20,apache-ant-1.10.6,concrete-value,constant-argument,org/apache/tools/ant/taskdefs/Javadoc.java:2086,org.apache.tools.ant.types.Path#concatSystemBootClasspath,ignore,
+ANT-21,apache-ant-1.10.6,categorical-value,if-chain,org/apache/tools/ant/types/Path.java:565-587,org.apache.tools.ant.types.Path#concatSpecialPath#o,,
+ANT-22,apache-ant-1.10.6,dual-value-comparison,boolean-property,org/apache/tools/ant/types/AbstractFileSet.java:511,org.apache.tools.ant.types.AbstractFileSet#errorOnMissingDir,,
+ANT-23,apache-ant-1.10.6,concrete-value,assign-constant,org/apache/tools/ant/types/AbstractFileSet.java:80,org.apache.tools.ant.types.AbstractFileSet#errorOnMissingDir,1,
+ANT-24,apache-ant-1.10.6,dual-value-comparison,null-empty-check,src/main/org/apache/tools/ant/PropertyHelper.java:1169,org.apache.tools.ant.PropertyHelper#nullOrEmpty#value,,
+ANT-25,apache-ant-1.10.6,dual-value-comparison,null-check,src/main/org/apache/tools/ant/Main.java:1163,org.apache.tools.ant.Target#description,,
+ANT-26,apache-ant-1.10.6,categorical-value,equals-or-chain,"src/main/org/apache/tools/ant/Project.java:1722,1723,1724",org.apache.tools.ant.Project#toBoolean#s,,
+ANT-27,apache-ant-1.10.6,categorical-value,equals-or-chain,"src/main/org/apache/tools/ant/PropertyHelper.java:1152,1153,1154",org.apache.tools.ant.PropertyHelper#toBoolean#s,,
+ANT-28,apache-ant-1.10.6,concrete-value,assign-class-call,org/apache/tools/ant/Project.java:1218,org.apache.tools.ant.Project#getExecutor#classname,org.apache.tools.ant.helper.DefaultExecutor,
+ANT-29,apache-ant-1.10.6,concrete-value,setter,src/main/org/apache/tools/ant/helper/ProjectHelperImpl.java:427,org.apache.tools.ant.Project#setBasedir,!org.apache.tools.ant.helper.ProjectHelperImpl#buildFileParent#getAbsolutePath,
+ANT-30,apache-ant-1.10.6,categorical-value,if-return-chain,org/apache/tools/ant/taskdefs/compilers/CompilerAdapterFactory.java:100-148,org.apache.tools.ant.taskdefs.Javac#getCompiler,,
+ANT-31,apache-ant-1.10.6,categorical-value,index-loop-find,org/apache/tools/ant/types/EnumeratedAttribute.java:121-126,org.apache.tools.ant.taskdefs.Zip.WhenEmpty#getValues,"!org.apache.tools.ant.RuntimeConfigurable#maybeConfigure(org.apache.tools.ant.Project, boolean)#getValue",
+ANT-32,apache-ant-1.10.6,categorical-value,iterate-and-check-literal,src/main/org/apache/tools/ant/ProjectHelper.java:139-145,org.apache.tools.ant.ProjectHelper.OnMissingExtensionPoint#values,,
+GUA-1,guava-28.0,dual-value-comparison,null-check,guava/src/com/google/common/base/Preconditions.java:877,com.google.common.base.Optional#of#reference,,
+GUA-2,guava-28.0,dual-value-comparison,boolean-property,guava/src/com/google/common/collect/Iterators.java:302,!com.google.common.collect.Iterators#getOnlyElement(java.util.Iterator<T>)#iterator#hasNext,,
+GUA-3,guava-28.0,value-comparison,binary-comparison,guava/src/com/google/common/collect/Multisets.java:686,com.google.common.collect.Multiset#count,lt,com.google.common.collect.Multiset.Entry#getCount
+GUA-4,guava-28.0,dual-value-comparison,boolean-property,guava/src/com/google/common/base/Preconditions.java:127,com.google.common.base.Preconditions#checkArgument(boolean)#expression,,
+GUA-5,guava-28.0,dual-value-comparison,null-check,guava/src/com/google/common/base/Preconditions.java:877,com.google.common.base.Preconditions#checkNotNull(T)#reference,,
+GUA-6,guava-28.0,value-comparison,binary-comparison,guava/src/com/google/common/base/Preconditions.java:1342,"com.google.common.base.Preconditions#checkElementIndex(int, int, String)#index",gte,"com.google.common.base.Preconditions#checkElementIndex(int, int, String)#size"
+GUA-7,guava-28.0,value-comparison,binary-comparison,guava/src/com/google/common/base/Preconditions.java:1387,"com.google.common.base.Preconditions#checkPositionIndex(int, int, String)#index",gt,"com.google.common.base.Preconditions#checkPositionIndex(int, int, String)#size"
+GUA-8,guava-28.0,dual-value-comparison,boolean-property,guava/src/com/google/common/collect/Iterators.java:845,!com.google.common.collect.Iterators#getNext#iterator#hasNext,,
+GUA-9,guava-28.0,dual-value-comparison,polymorphic-method,guava/src/com/google/common/base/Optional.java:166,com.google.common.base.Optional#isPresent,,
+GUA-10,guava-28.0,dual-value-comparison,polymorphic-method,"guava/src/com/google/common/base/Present.java:40
+guava/src/com/google/common/base/Absent.java:43",com.google.common.base.Optional#get,com.google.common.base#Absent<T>,
+GUA-11,guava-28.0,dual-value-comparison,external,guava/src/com/google/common/collect/Ordering.java:548,!com.google.common.collect.Ordering#min(java.util.Iterator<E>)#iterator#next,,
+HCO-1,httpcomponents,dual-value-comparison,boolean-property,httpcomponents-client-4.5.9/httpclient/src/main/java/org/apache/http/impl/conn/DefaultHttpResponseParser.java:144,org.apache.http.message.LineParser#hasProtocolVersion,,
+HCO-2,httpcomponents,concrete-value,return-constant,httpcomponents-client-4.5.9/httpclient/src/main/java/org/apache/http/conn/routing/HttpRoute.java:93,80,,
+HCO-3,httpcomponents,dual-value-comparison,assign-constant,org/apache/http/entity/BasicHttpEntity.java:56,org.apache.http.entity.BasicHttpEntity#length,-1L,
+HCO-4,httpcomponents,value-comparison,binary-comparison,org/apache/http/entity/InputStreamEntity.java:131,org.apache.http.entity.InputStreamEntity#length,lt,0L
+HCO-5,httpcomponents,value-comparison,binary-comparison,org/apache/http/ProtocolVersion.java:241,org.apache.http.ProtocolVersion#compareToVersion,lte,0
+HCO-6,httpcomponents,dual-value-comparison,binary-comparison,org/apache/http/message/BasicListHeaderIterator.java:132,org.apache.http.NameValuePair#getName,eq,"org.apache.http.protocol.HTTP#CONN_KEEP_ALIVE=""Keep-Alive"""
+HCO-7,httpcomponents,concrete-value,constant-argument,org/apache/http/impl/pool/BasicConnPool.java:58,org.apache.http.pool.AbstractConnPool#AbstractConnPool,20,
+HCO-8,httpcomponents,dual-value-comparison,null-check,org/apache/http/nio/protocol/HttpAsyncService.java:355,org.apache.http.nio.protocol.HttpAsyncService#expectationVerifier,,
+HCO-9,httpcomponents,dual-value-comparison,null-check,org/apache/http/protocol/HttpService.java:436,org.apache.http.protocol.HttpRequestHandlerMapper#lookup,,
+HCO-10,httpcomponents,dual-value-comparison,null-check,httpcomponents-core-4.4.11/httpcore/src/main/java/org/apache/http/impl/BHttpConnectionBase.java:237,org.apache.http.HttpMessage#getFirstHeader,,
+HCO-11,httpcomponents,dual-value-comparison,binary-comparison,org/apache/http/protocol/HttpService.java:373,org.apache.http.RequestLine#getMethod,eq,HEAD
+HCO-12,httpcomponents,dual-value-comparison,binary-comparison,org/apache/http/protocol/HttpService.java:377,org.apache.http.StatusLine#getStatusCode,gte,org.apache.http.HttpStatus#SC_OK=200
+HCO-13,httpcomponents,dual-value-comparison,null-check,org/apache/http/impl/client/cache/RequestProtocolCompliance.java:199,org.apache.http.HttpEntity#getContentType,,
+HCO-14,httpcomponents,dual-value-comparison,null-check,org/apache/http/impl/entity/StrictContentLengthStrategy.java:103,org.apache.http.HttpMessage#getFirstHeader,,
+HCO-15,httpcomponents,dual-value-comparison,boolean-property,org/apache/http/impl/client/cache/CachingExec.java:430,org.apache.http.message.AbstractHttpMessage#containsHeader,,
+HCO-16,httpcomponents,value-comparison,binary-comparison,org/apache/http/impl/entity/StrictContentLengthStrategy.java:107,java.lang.Long#parseLong(java.lang.String),lt,0L
+HCO-17,httpcomponents,value-comparison,binary-comparison,org/apache/http/protocol/HttpService.java:379,org.apache.http.StatusLine#getStatusCode,neq,org.apache.http.HttpStatus#SC_NOT_MODIFIED=304
+HCO-18,httpcomponents,dual-value-comparison,boolean-property,httpcomponents-core-4.4.11/httpcore/src/main/java/org/apache/http/entity/BufferedHttpEntity.java:60,org.apache.http.HttpEntity#isRepeatable,,
+HCO-19,httpcomponents,concrete-value,return-constant,httpcomponents-client-4.5.9/httpclient/src/main/java/org/apache/http/impl/conn/DefaultSchemePortResolver.java:55,80,,
+HCO-20,httpcomponents,categorical-value,binary-comparison,httpcomponents-client-4.5.9/httpclient-cache/src/main/java/org/apache/http/impl/client/cache/WarningValue.java:123,org.apache.http.impl.client.cache.WarningValue#isChar#c,gte,0
+HCO-21,httpcomponents,value-comparison,delta-check,"httpcomponents-core-4.4.11/httpcore/src/main/java/org/apache/http/ProtocolVersion.java:207,208",org.apache.http.ProtocolVersion#major,org.apache.http.ProtocolVersion#major,
+JED-1,jedit-5.6pre0,dual-value-comparison,boolean-property,org/gjt/sp/jedit/jEdit.java:304,java.io.File#exists,,
+JED-2,jedit-5.6pre0,dual-value-comparison,boolean-property,org/gjt/sp/jedit/jEdit.java:3089,org.gjt.sp.jedit.jEdit#background,,
+JED-3,jedit-5.6pre0,value-comparison,binary-comparison,org/gjt/sp/jedit/gui/InputHandler.java:347,org.gjt.sp.jedit.input.AbstractInputHandler#repeatCount,gt,org.gjt.sp.jedit.input.AbstractInputHandler#REPEAT_COUNT_THRESHOLD=20
+JED-4,jedit-5.6pre0,dual-value-comparison,binary-flag-check,org/gjt/sp/jedit/Buffer.java:1916,org.gjt.sp.jedit.Buffer#flags,org.gjt.sp.jedit.Buffer#NEW_FILE=3,
+JED-5,jedit-5.6pre0,dual-value-comparison,boolean-property,org/gjt/sp/jedit/Buffer.java:2086,org.gjt.sp.jedit.io.VFSFile#canWrite,,
+JED-6,jedit-5.6pre0,value-comparison,binary-comparison,"org/gjt/sp/jedit/Buffer.java:2238,2239",org.gjt.sp.jedit.Buffer#path,eq,org.gjt.sp.jedit.Buffer#path
+JED-7,jedit-5.6pre0,value-comparison,binary-comparison,"org/gjt/sp/jedit/Buffer.java:2264,2265",org.gjt.sp.jedit.Buffer#path,eq,org.gjt.sp.jedit.Buffer#path
+JED-8,jedit-5.6pre0,dual-value-comparison,boolean-property,"org/gjt/sp/jedit/Buffer.java:366,367,368",org.gjt.sp.jedit.buffer.JEditBuffer#dirty,,
+JED-9,jedit-5.6pre0,dual-value-comparison,boolean-property,org/gjt/sp/jedit/Buffer.java:208,!org.gjt.sp.jedit.Buffer#autosaveFile#exists,,
+JED-10,jedit-5.6pre0,dual-value-comparison,boolean-property,org/gjt/sp/jedit/Buffer.java:1788,org.gjt.sp.jedit.jEdit#getBooleanProperty(java.lang.String),,
+JED-11,jedit-5.6pre0,dual-value-comparison,null-check,org/gjt/sp/jedit/bufferio/BufferSaveRequest.java:225-226,org.gjt.sp.jedit.buffer.JEditBuffer#getProperty,,
+JED-12,jedit-5.6pre0,value-comparison,binary-comparison,org/gjt/sp/jedit/bufferio/BufferSaveRequest.java:228,"org.gjt.sp.jedit.jEdit#getIntegerProperty(java.lang.String, int)",gt,0
+JED-13,jedit-5.6pre0,value-comparison,binary-comparison,org/gjt/sp/jedit/MiscUtilities.java:875,"org.gjt.sp.jedit.jEdit#getIntegerProperty(java.lang.String, int)",gt,1
+JED-14,jedit-5.6pre0,dual-value-comparison,null-zero-check,org/gjt/sp/jedit/MiscUtilities.java:732,org.gjt.sp.jedit.jEdit#getProperty(java.lang.String),,
+JED-15,jedit-5.6pre0,dual-value-comparison,binary-comparison,org/gjt/sp/jedit/EditServer.java:314,"!org.gjt.sp.jedit.EditServer#handleClient(java.net.Socket, java.io.DataInputStream)#in#readInt",neq,org.gjt.sp.jedit.EditServer#authKey
+JED-16,jedit-5.6pre0,dual-value-comparison,null-zero-check,org/gjt/sp/jedit/browser/VFSBrowser.java:1960,org.gjt.sp.jedit.browser.VFSDirectoryEntryTable#getSelectedFiles,,
+JED-17,jedit-5.6pre0,dual-value-comparison,boolean-property,org/gjt/sp/jedit/jEdit.java:2036,org.gjt.sp.jedit.buffer.JEditBuffer#dirty,,
+JED-18,jedit-5.6pre0,value-comparison,binary-comparison,org/gjt/sp/jedit/buffer/UndoManager.java:297,org.gjt.sp.jedit.buffer.UndoManager#undoCount,gt,org.gjt.sp.jedit.buffer.UndoManager#limit
+JED-19,jedit-5.6pre0,value-comparison,binary-comparison,org/gjt/sp/jedit/gui/CompleteWord.java:93,"org.gjt.sp.jedit.gui.CompleteWord#getCompletions(org.gjt.sp.jedit.Buffer, java.lang.String, int)",eq,1
+JED-20,jedit-5.6pre0,value-comparison,binary-comparison,org/gjt/sp/jedit/gui/CompleteWord.java:93,"org.gjt.sp.jedit.gui.CompleteWord#getCompletions(org.gjt.sp.jedit.Buffer, java.lang.String, int)",eq,1
+JED-21,jedit-5.6pre0,value-comparison,binary-comparison,org/gjt/sp/jedit/textarea/TextArea.java:6000,org.gjt.sp.jedit.buffer.JEditBuffer#getIntegerProperty,lte,0
+JED-22,jedit-5.6pre0,value-comparison,binary-comparison,org/gjt/sp/jedit/textarea/TextArea.java:5673,org.gjt.sp.jedit.textarea.TextArea#doWordWrap#logicalLength,gte,org.gjt.sp.jedit.textarea.TextArea#maxLineLen
+JED-23,jedit-5.6pre0,concrete-value,assign-constant,org/gjt/sp/jedit/jEdit.java:174,org.gjt.sp.jedit.jEdit#main#level,org.gjt.sp.util.Log#WARNING=7,
+JED-24,jedit-5.6pre0,dual-value-comparison,boolean-property,org/gjt/sp/jedit/Buffer.java:1043,org.gjt.sp.jedit.buffer.JEditBuffer#dirty,,
+JED-25,jedit-5.6pre0,dual-value-comparison,boolean-property,org/gjt/sp/jedit/Buffer.java:1045,org.gjt.sp.jedit.buffer.JEditBuffer#isReadOnly,,
+JED-26,jedit-5.6pre0,dual-value-comparison,binary-flag-check,org/gjt/sp/jedit/Buffer.java:1916,org.gjt.sp.jedit.Buffer#flags,org.gjt.sp.jedit.Buffer#NEW_FILE=3,
+JED-27,jedit-5.6pre0,value-comparison,binary-comparison,org/gjt/sp/jedit/jEdit.java:4729,org.gjt.sp.jedit.jEdit#viewsFirst,eq,org.gjt.sp.jedit.jEdit#viewsLast
+JED-28,jedit-5.6pre0,categorical-value,enum-valueOf,org/gjt/sp/jedit/bufferset/BufferSetManager.java:51,org.gjt.sp.jedit.bufferset.BufferSet.Scope#valueOf,,
+JED-29,jedit-5.6pre0,dual-value-comparison,str-starts,org/gjt/sp/jedit/jEdit.java:238,org.gjt.sp.jedit.jEdit#main#arg,-background,
+JED-30,jedit-5.6pre0,concrete-value,properties-file,org/gjt/sp/jedit/jedit.props:92,org/gjt/sp/jedit/jedit.props:92,org.gjt.sp.jedit.PropertyManager#loadSystemProps,
+JED-31,jedit-5.6pre0,concrete-value,properties-file,org/gjt/sp/jedit/jedit.props:99,org/gjt/sp/jedit/jedit.props:99,org.gjt.sp.jedit.PropertyManager#loadSystemProps,
+JED-32,jedit-5.6pre0,dual-value-comparison,switch-case,org/gjt/sp/jedit/jEdit.java:2596,org.gjt.sp.jedit.Buffer#checkFileStatus,org.gjt.sp.jedit.Buffer#FILE_CHANGED,
+JED-33,jedit-5.6pre0,dual-value-comparison,boolean-property,org/gjt/sp/jedit/textarea/TextAreaPainter.java:1455,org.gjt.sp.jedit.textarea.TextAreaPainter#eolMarkers,,
+JTI-1,joda_time-2.10.3,concrete-value,constant-argument,src/main/java/org/joda/time/chrono/EthiopicChronology.java:145,org.joda.time.DateTime,1,
+JTI-2,joda_time-2.10.3,value-comparison,binary-comparison,src/main/java/org/joda/time/chrono/LimitChronology.java:283,"org.joda.time.chrono.LimitChronology#checkLimits(long, String)#instant",lt,org.joda.time.chrono.LimitChronology#iLowerLimit
+JTI-3,joda_time-2.10.3,concrete-value,constant-argument,src/main/java/org/joda/time/chrono/GJChronology.java:104,org.joda.time.Instant#Instant(long),-12219292800000L,
+JTI-4,joda_time-2.10.3,categorical-value,binary-flag-check,src/main/java/org/joda/time/chrono/IslamicChronology.java:544,org.joda.time.chrono.IslamicChronology.LeapYearPatternType#pattern,org.joda.time.chrono.IslamicChronology.LeapYearPatternType#isLeapYear#year,
+JTI-5,joda_time-2.10.3,concrete-value,constant-argument,"src/main/java/org/joda/time/chrono/IslamicChronology.java:170,180","org.joda.time.chrono.IslamicChronology#getInstance(org.joda.time.DateTimeZone, org.joda.time.chrono.IslamicChronology.LeapYearPatternType)",org.joda.time.chrono.IslamicChronology#LEAP_YEAR_16_BASED,
+JTI-6,joda_time-2.10.3,concrete-value,constant-argument,src/main/java/org/joda/time/chrono/IslamicChronology.java:212,org.joda.time.DateTime,1,
+JTI-7,joda_time-2.10.3,value-comparison,binary-comparison,src/main/java/org/joda/time/field/FieldUtils.java:274,"org.joda.time.chrono.BasicChronology#getDateTimeMillis(int, int, int, int, int, int, int)#millisOfSecond",gt,999
+JTI-8,joda_time-2.10.3,value-comparison,binary-comparison,src/main/java/org/joda/time/field/FieldUtils.java:274,"org.joda.time.field.PreciseDurationDateTimeField#set(long, int)#value",gt,53
+JTI-9,joda_time-2.10.3,value-comparison,binary-comparison,src/main/java/org/joda/time/base/AbstractInterval.java:62,"org.joda.time.base.AbstractInterval#checkInterval(long, long)#end",lt,"org.joda.time.base.AbstractInterval#checkInterval(long, long)#start"
+JTI-10,joda_time-2.10.3,value-comparison,binary-comparison,src/main/java/org/joda/time/chrono/BasicFixedMonthChronology.java:112,org.joda.time.chrono.BasicFixedMonthChronology#isLeapYear(int)#year & 3,eq,3
+JTI-11,joda_time-2.10.3,value-comparison,binary-comparison,src/main/java/org/joda/time/chrono/LimitChronology.java:283,"org.joda.time.chrono.LimitChronology#checkLimits(long, String)#instant",lt,org.joda.time.chrono.LimitChronology#iLowerLimit
+JTI-12,joda_time-2.10.3,concrete-value,constant-argument,src/main/java/org/joda/time/chrono/CopticChronology.java:144,org.joda.time.DateTime,1,
+JTI-13,joda_time-2.10.3,categorical-value,mod-op,"src/main/java/org/joda/time/chrono/BasicChronology.java:567,571",src/main/java/org/joda/time/chrono/BasicChronology.java:567,7,
+RHI-1,rhino-1.6R5,categorical-value,equals-or-chain,"src/org/mozilla/javascript/TokenStream.java:838,840,841",org.mozilla.javascript.TokenStream#getChar,,
+RHI-2,rhino-1.6R5,concrete-value,constant-argument,src/org/mozilla/javascript/ScriptRuntime.java:2822-2824,"org.mozilla.javascript.ScriptableObject#defineProperty(org.mozilla.javascript.Scriptable, java.lang.String, java.lang.Object, int)",org.mozilla.javascript.Undefined#instance,
+RHI-3,rhino-1.6R5,value-comparison,binary-comparison,src/org/mozilla/javascript/TokenStream.java:1277,org.mozilla.javascript.TokenStream#getChar,neq,\n
+RHI-4,rhino-1.6R5,dual-value-comparison,null-check,src/org/mozilla/javascript/ScriptableObject.java:224,org.mozilla.javascript.ScriptableObject#getSlot,,
+RHI-5,rhino-1.6R5,dual-value-comparison,binary-flag-check,src/org/mozilla/javascript/IdScriptableObject.java:219,org.mozilla.javascript.IdScriptableObject.PrototypeValues#attributeArray,org.mozilla.javascript.ScriptableObject#READONLY=1,
+RHI-6,rhino-1.6R5,dual-value-comparison,null-check,src/org/mozilla/javascript/ScriptableObject.java:1566,org.mozilla.javascript.Scriptable#getPrototype,,
+RHI-7,rhino-1.6R5,dual-value-comparison,null-check,src/org/mozilla/javascript/ScriptableObject.java:1566,org.mozilla.javascript.Scriptable#getPrototype,,
+RHI-8,rhino-1.6R5,dual-value-comparison,binary-flag-check,src/org/mozilla/javascript/IdScriptableObject.java:241,org.mozilla.javascript.IdScriptableObject.PrototypeValues#attributeArray,org.mozilla.javascript.ScriptableObject#PERMANENT=4,
+RHI-9,rhino-1.6R5,value-comparison,binary-comparison,src/org/mozilla/javascript/ScriptRuntime.java:1569,org.mozilla.javascript.ScriptRuntime#topScopeName,eq,org.mozilla.javascript.Scriptable#NOT_FOUND
+RHI-10,rhino-1.6R5,value-comparison,binary-comparison,src/org/mozilla/javascript/Interpreter.java:3980,org.mozilla.javascript.Interpreter.CallFrame#sDbl,neq,0
+RHI-11,rhino-1.6R5,value-comparison,binary-comparison,src/org/mozilla/javascript/IRFactory.java:1354,org.mozilla.javascript.Node.NumberNode#number,neq,0
+RHI-12,rhino-1.6R5,value-comparison,self-comparison,src/org/mozilla/javascript/Interpreter.java:3985,!org.mozilla.javascript.Interpreter#stack_boolean#x#doubleValue,,
+RHI-13,rhino-1.6R5,value-comparison,binary-comparison,src/org/mozilla/javascript/Interpreter.java:3981,org.mozilla.javascript.Interpreter.CallFrame#stack,eq,org.mozilla.javascript.Undefined#instance
+RHI-14,rhino-1.6R5,value-comparison,binary-comparison,src/org/mozilla/javascript/ScriptRuntime.java:279,org.mozilla.javascript.ScriptRuntime#toNumber(java.lang.Object)#val,eq,org.mozilla.javascript.Undefined#instance
+RHI-15,rhino-1.6R5,categorical-value,switch-len-char,src/org/mozilla/javascript/TokenStream.java:188,org.mozilla.javascript.TokenStream#getStringFromBuffer,,
+RHI-16,rhino-1.6R5,dual-value-comparison,boolean-property,src/org/mozilla/javascript/ScriptRuntime.java:284,!org.mozilla.javascript.ScriptRuntime#toNumber(java.lang.Object)#val#booleanValue,,
+RHI-17,rhino-1.6R5,value-comparison,self-comparison,src/org/mozilla/javascript/ScriptRuntime.java:938,org.mozilla.javascript.ScriptRuntime#toNumber(java.lang.Object),,
+RHI-18,rhino-1.6R5,value-comparison,binary-comparison,src/org/mozilla/javascript/ScriptRuntime.java:941-943,org.mozilla.javascript.ScriptRuntime#toNumber(java.lang.Object),eq,java.lang.Double#POSITIVE_INFINITY
+RHI-19,rhino-1.6R5,value-comparison,binary-comparison,src/org/mozilla/javascript/ScriptRuntime.java:663,org.mozilla.javascript.ScriptRuntime#toString(java.lang.Object)#val,eq,org.mozilla.javascript.Undefined#instance
+RHI-20,rhino-1.6R5,categorical-value,switch-len-char,src/org/mozilla/javascript/TokenStream.java:188-278,org.mozilla.javascript.TokenStream#stringToKeyword#name,,
+RHI-21,rhino-1.6R5,value-comparison,cast-self-comparison,src/org/mozilla/javascript/ScriptRuntime.java:975,org.mozilla.javascript.ScriptRuntime#toNumber(java.lang.Object),,
+RHI-22,rhino-1.6R5,value-comparison,boolean-property,src/org/mozilla/javascript/DToA.java:1262,org.mozilla.javascript.DToA#JS_dtostr#sign,,
+SWA-1,swarm-2.8.11,dual-value-comparison,null-check,lib/volcano-core/src/main/java/gov/usgs/volcanoes/core/data/file/WinDataFile.java:205,gov.usgs.volcanoes.core.data.file.WinDataFile#configFile,,
+SWA-2,swarm-2.8.11,value-comparison,binary-comparison,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveViewPanel.java:613,gov.usgs.volcanoes.swarm.wave.WaveViewSettings#viewType,eq,gov.usgs.volcanoes.swarm.wave.WaveViewSettings.ViewType#SPECTROGRAM
+SWA-3,swarm-2.8.11,concrete-value,constant-argument,src/main/java/gov/usgs/volcanoes/swarm/SwarmConfig.java:351,gov.usgs.volcanoes.core.util.StringUtils#stringToInt,30,
+SWA-4,swarm-2.8.11,concrete-value,assign-constant,src/main/java/gov/usgs/volcanoes/swarm/heli/HelicorderViewerSettings.java:48,gov.usgs.volcanoes.swarm.heli.HelicorderViewerSettings#refreshInterval,15,
+SWA-5,swarm-2.8.11,concrete-value,assign-constant,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveViewSettings.java:103,gov.usgs.volcanoes.swarm.wave.WaveViewSettings#removeBias,1,
+SWA-6,swarm-2.8.11,value-comparison,binary-comparison,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveViewPanel.java:816,gov.usgs.volcanoes.swarm.wave.WaveViewSettings#spectrogramMaxFreq,gt,gov.usgs.volcanoes.core.data.Wave#getNyquist
+SWA-7,swarm-2.8.11,dual-value-comparison,boolean-property,src/main/java/gov/usgs/volcanoes/swarm/map/MapMiniPanel.java:829,gov.usgs.volcanoes.swarm.wave.WaveViewSettings#spectraLogPower,,
+SWA-8,swarm-2.8.11,dual-value-comparison,boolean-property,lib/volcano-core/src/main/java/gov/usgs/volcanoes/core/legacy/plot/render/wave/SpectraRenderer.java:157,gov.usgs.volcanoes.core.legacy.plot.render.wave.SpectraRenderer#autoScale,,
+SWA-9,swarm-2.8.11,dual-value-comparison,boolean-property,lib/volcano-core/src/main/java/gov/usgs/volcanoes/core/legacy/plot/render/wave/SpectraRenderer.java:157,gov.usgs.volcanoes.core.legacy.plot.render.wave.SpectraRenderer#autoScale,,
+SWA-10,swarm-2.8.11,value-comparison,binary-comparison,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveViewPanel.java:816,gov.usgs.volcanoes.swarm.wave.WaveViewSettings#spectrogramMaxFreq,gt,gov.usgs.volcanoes.core.data.Wave#getNyquist
+SWA-11,swarm-2.8.11,dual-value-comparison,boolean-property,lib/volcano-core/src/main/java/gov/usgs/volcanoes/core/legacy/plot/render/wave/SpectraRenderer.java:123,gov.usgs.volcanoes.core.legacy.plot.render.wave.SpectraRenderer#logPower,,
+SWA-12,swarm-2.8.11,dual-value-comparison,boolean-property,lib/volcano-core/src/main/java/gov/usgs/volcanoes/core/legacy/plot/render/wave/SpectrogramRenderer.java:191,gov.usgs.volcanoes.core.legacy.plot.render.wave.SpectrogramRenderer#autoScale,,
+SWA-13,swarm-2.8.11,dual-value-comparison,boolean-property,lib/volcano-core/src/main/java/gov/usgs/volcanoes/core/legacy/plot/render/wave/SpectrogramRenderer.java:191,gov.usgs.volcanoes.core.legacy.plot.render.wave.SpectrogramRenderer#autoScale,,
+SWA-14,swarm-2.8.11,dual-value-comparison,boolean-property,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveViewPanel.java:1123,gov.usgs.volcanoes.swarm.wave.WaveViewSettings#filterOn,,
+SWA-15,swarm-2.8.11,dual-value-comparison,boolean-property,lib/volcano-core/src/main/java/gov/usgs/volcanoes/core/data/Wave.java:899,gov.usgs.volcanoes.swarm.wave.WaveViewSettings#zeroPhaseShift,,
+SWA-16,swarm-2.8.11,dual-value-comparison,boolean-property,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveViewPanel.java:283,gov.usgs.volcanoes.swarm.wave.WaveViewSettings#pickEnabled,,
+SWA-17,swarm-2.8.11,categorical-value,if-chain,lib/volcano-core/src/main/java/gov/usgs/volcanoes/core/quakeml/Pick.java:38-46,org.w3c.dom.Node#getTextContent,,
+SWA-18,swarm-2.8.11,value-comparison,binary-comparison,src/main/java/gov/usgs/volcanoes/swarm/event/PickSettings.java:73,gov.usgs.volcanoes.swarm.event.PickMenu#createPickMenu#weight,gt,gov.usgs.volcanoes.swarm.event.PickSettings#numWeight=5
+SWA-19,swarm-2.8.11,dual-value-comparison,boolean-property,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveClipboardFrame.java:283,!gov.usgs.volcanoes.swarm.wave.WaveClipboardFrame#pickButton#isSelected,,
+SWA-20,swarm-2.8.11,value-comparison,binary-comparison,src/main/java/gov/usgs/volcanoes/swarm/event/EventDialog.java:974,gov.usgs.volcanoes.swarm.event.PickData#getPickCount,gt,0
+SWA-21,swarm-2.8.11,dual-value-comparison,boolean-property,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveViewPanel.java:640,gov.usgs.volcanoes.swarm.wave.WaveViewSettings#pickEnabled,,
+SWA-22,swarm-2.8.11,concrete-value,assign-constant,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveViewerFrame.java:78,gov.usgs.volcanoes.swarm.wave.WaveViewerFrame#spanIndex,3,
+SWA-23,swarm-2.8.11,value-comparison,binary-comparison,lib/volcano-core/src/main/java/gov/usgs/volcanoes/core/data/RSAMData.java:202,cern.colt.matrix.DoubleMatrix2D#get,gte,gov.usgs.volcanoes.core.data.RSAMData#countEvents#olderValue * gov.usgs.volcanoes.core.data.RSAMData#countEvents#ratio
+SWA-24,swarm-2.8.11,concrete-value,constant-argument,src/main/java/gov/usgs/volcanoes/swarm/data/FileDataSource.java:204,javax.swing.filechooser.FileNameExtensionFilter,config,
+SWA-25,swarm-2.8.11,value-comparison,external,src/main/java/gov/usgs/volcanoes/swarm/wave/WaveViewSettingsDialog.java:295,"javax.swing.JSlider#JSlider(int, int, int)",,
+SWA-26,swarm-2.8.11,categorical-value,external,src/main/java/gov/usgs/volcanoes/swarm/rsam/RsamViewSettingsDialog.java:211,javax.swing.JComboBox,,
+SWA-27,swarm-2.8.11,value-comparison,binary-comparison,src/main/java/gov/usgs/volcanoes/swarm/map/MapSettingsDialog.java:286,javax.swing.text.JTextComponent#getText(),lt,-90
+UML-1,argouml-0.35.4,dual-value-comparison,null-empty-check,src/argouml-app/src/org/argouml/ui/ProjectBrowser.java:691,org.argouml.kernel.Project#getName,,
+UML-2,argouml-0.35.4,dual-value-comparison,boolean-property,src/argouml-app/src/org/argouml/ui/ProjectBrowser.java:1476,!org.argouml.ui.ProjectBrowser#saveAction#isEnabled(),,
+UML-3,argouml-0.35.4,concrete-value,constant-argument,"src/argouml-app/src/org/argouml/uml/reveng/Import.java:285,286",javax.swing#JCheckBox,1,
+UML-4,argouml-0.35.4,dual-value-comparison,boolean-property,src/argouml-app/src/org/argouml/uml/reveng/ImportCommon.java:573,org.argouml.uml.reveng.ImportCommon#isCreateDiagramsSelected,,
+UML-5,argouml-0.35.4,dual-value-comparison,boolean-property,src/argouml-app/src/org/argouml/uml/reveng/DiagramInterface.java:324,org.argouml.uml.reveng.ImportCommon#isMinimizeFigsSelected,,
+UML-6,argouml-0.35.4,dual-value-comparison,boolean-property,src/argouml-app/src/org/argouml/ui/ProjectBrowser.java:702,!org.argouml.ui.ProjectBrowser#saveAction#isEnabled,,
+UML-7,argouml-0.35.4,concrete-value,constant-argument,"src/argouml-app/src/org/argouml/uml/reveng/Import.java:293,294",javax.swing#JCheckBox,1,
+UML-8,argouml-0.35.4,concrete-value,assign-constant,src/argouml-app/src/org/argouml/kernel/ProjectImpl.java:210,org.argouml.kernel.ProjectImpl#description,,
+UML-9,argouml-0.35.4,concrete-value,constant-argument,src/argouml-app/src/org/argouml/notation/NotationSettings.java:140,org.argouml.notation.NotationSettings#setUseGuillemets,0,
+UML-10,argouml-0.35.4,concrete-value,constant-argument,src/argouml-app/src/org/argouml/notation/NotationSettings.java:139,org.argouml.notation.NotationSettings#setShowVisibilities,0,
+UML-11,argouml-0.35.4,dual-value-comparison,boolean-property,src/argouml-app/src/org/argouml/notation/providers/uml/AssociationEndNameNotationUml.java:236,org.argouml.notation.NotationSettings#showVisibilities,,
+UML-12,argouml-0.35.4,concrete-value,constant-argument,src/argouml-app/src/org/argouml/notation/NotationSettings.java:134,org.argouml.notation.NotationSettings#setShowMultiplicities,0,
+UML-13,argouml-0.35.4,dual-value-comparison,boolean-property,"src/argouml-app/src/org/argouml/notation/providers/uml/AttributeNotationUml.java:590,591,592",org.argouml.notation.NotationSettings#isShowMultiplicities,,
+UML-14,argouml-0.35.4,concrete-value,constant-argument,src/argouml-app/src/org/argouml/notation/NotationSettings.java:136,org.argouml.notation.NotationSettings#setShowProperties,0,
+UML-15,argouml-0.35.4,dual-value-comparison,boolean-property,"src/argouml-app/src/org/argouml/notation/providers/uml/AttributeNotationUml.java:614
+src/argouml-app/src/org/argouml/notation/providers/uml/OperationNotationUml.java:571",org.argouml.notation.NotationSettings#isShowProperties,,
+UML-16,argouml-0.35.4,dual-value-comparison,boolean-property,src/argouml-app/src/org/argouml/notation/providers/uml/AttributeNotationUml.java:595-601,org.argouml.notation.NotationSettings#isShowTypes,,
+UML-17,argouml-0.35.4,concrete-value,constant-argument,"src/argouml-app/src/org/argouml/uml/diagram/DiagramSettings.java:223,224","org.argouml.configuration.Configuration#getInteger(org.argouml.configuration.ConfigurationKey, int)",1,
+UML-18,argouml-0.35.4,concrete-value,constant-argument,src/argouml-app/src/org/argouml/uml/diagram/ui/FigGeneralization.java:174,org.argouml.uml.diagram.ui.FigGeneralization#updateDiscriminatorText#disc,,
+UML-19,argouml-0.35.4,categorical-value,if-chain,src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java:482-490,javax.swing.AbstractButton#getActionCommand,,
+UML-20,argouml-0.35.4,categorical-value,if-chain,src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java:482-490,javax.swing.AbstractButton#getActionCommand,,
+UML-21,argouml-0.35.4,categorical-value,if-chain,"src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java:708,710,713","org.argouml.core.propertypanels.model.GetterSetterManagerImpl.ChangeabilityGetterSetter#set(Object, Object)#value",,
+UML-22,argouml-0.35.4,concrete-value,override-value-set,src/argouml-app/src/org/argouml/persistence/AbstractFilePersister.java:217,org.argouml.persistence.AbstractFilePersister#getExtension(),,
+UML-23,argouml-0.35.4,dual-value-comparison,str-ends,"src/argouml-app/src/org/argouml/uml/ui/SaveGraphicsManager.java:285,286,292,314",!org.argouml.uml.ui.ActionSaveGraphics#trySave#theFile#getName,org.argouml.util.SuffixFilter#getSuffix,
+UML-24,argouml-0.35.4,concrete-value,constructor-assign,src/argouml-app/src/org/argouml/kernel/ProjectImpl.java:208,org.argouml.kernel.ProjectImpl#authorname,,
+UML-25,argouml-0.35.4,dual-value-comparison,null-boolean-check,src/argouml-app/src/org/argouml/ui/ProjectBrowser.java:956,org.argouml.ui.ProjectBrowser#saveAction,,
+UML-26,argouml-0.35.4,concrete-value,properties-file,src/argouml-app/src/org/argouml/i18n/misc.properties:243,org.argouml.ui.DisplayTextTree#getModelElementDisplayName#name,,
+UML-27,argouml-0.35.4,concrete-value,external,src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/StylePanelFigClass.java:83,,,
+UML-28,argouml-0.35.4,concrete-value,constant-argument,src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLMultiplicityPanel.java:318,"org.argouml.model.euml.CoreHelperEUMLImpl#setMultiplicity(Object, String)",1,

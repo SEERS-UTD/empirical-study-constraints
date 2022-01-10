@@ -1,0 +1,5 @@
+rootProject.name = 'fine-grained-traceability'
+
+include 'Lasso'
+include 'seers-base'
+include 'Lasso:programs:sample'

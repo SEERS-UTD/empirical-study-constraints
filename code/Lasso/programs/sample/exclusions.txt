@@ -1,0 +1,15 @@
+apple\/.*
+com\/.*
+dalvik\/.*
+java\/[^l]+
+javafx\/.*
+jdk\/.*
+netscape\/.*
+oracle\/.*
+org\/apache\/xerces\/.*
+org\/ietf\/.*
+org\/jcp\/.*
+org\/netbeans\/.*
+org\/omg\/.*
+org\/openide\/.*
+sun\/.*

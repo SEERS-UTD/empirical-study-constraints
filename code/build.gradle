@@ -1,0 +1,17 @@
+project(':Lasso'){
+    apply plugin: 'java'
+
+    dependencies {
+        implementation project(':seers-base')
+    }
+
+    compileJava {
+        dependsOn ':Lasso:programs:sample:jar'
+    }
+}
+
+project(':Lasso:programs:sample'){
+    apply plugin: 'java'
+
+    libsDirName = '..'
+}

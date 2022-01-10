@@ -10,4 +10,6 @@ Replication package for EMSE submission.
  5. `training`: Training materials for tracers.
  6. `questionnaires`: The four questionnaires used to conduct the developer study.
  7. `protocol`: Protocol for extraction of data constraints from textual artifacts.
+ 8. `code`: Code of the automated tracing tool from section 6.
+ 9. `detector-inputs.csv`: Manually produced detector inputs for the study constraints, to be used with above code.
 
