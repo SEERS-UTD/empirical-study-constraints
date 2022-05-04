@@ -32,3 +32,4 @@ index-loop-find,"Iterate over collection of possible values. If the variable mat
 Return statement"
 assign-class-call,Assigns a value derived from a method call on the result of a .class construct,1,variable,,,Assignment
 if-return-chain,"A chain of ifs is used like a switch on a field, checking against the possible values of the variable. There are no else blocks and the body of each if is a return statement",1,variable,,,If statement
+enum-instanceOf,The instanceOf operator is used to check whether a variable is an instance of an Enum type,,variable,class,,Boolean expression

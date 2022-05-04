@@ -401,13 +401,18 @@ UML-11,boolean-property,org/argouml/notation/providers/uml/AssociationNameNotati
 UML-11,boolean-property,org/argouml/notation/providers/uml/AttributeNotationUml.java:580,tool-assisted
 UML-11,boolean-property,org/argouml/notation/providers/uml/ModelElementNameNotationUml.java:104,tool-assisted
 UML-11,boolean-property,org/argouml/notation/providers/uml/OperationNotationUml.java:540,tool-assisted
+UML-11,boolean-property,org/argouml/uml/diagram/static_structure/ui/FigPackage.java:569,manual
 UML-12,constant-argument,org/argouml/notation/NotationSettings.java:134,manual
+UML-12,constant-argument,org/argouml/configuration/Configuration.java:270,manual
+UML-12,constant-argument,org/argouml/notation/ui/SettingsTabNotation.java:260,manual
 UML-13,boolean-property,src/argouml-app/src/org/argouml/notation/providers/uml/AttributeNotationUml.java:590,manual
 UML-13,boolean-property,org/argouml/kernel/ProjectSettings.java:469,tool-assisted
 UML-14,constant-argument,org/argouml/notation/NotationSettings.java:136,manual
+UML-14,constant-argument,org/argouml/configuration/Configuration.java:270,manual
 UML-15,boolean-property,org/argouml/notation/providers/uml/AttributeNotationUml.java:614,manual
 UML-15,boolean-property,org/argouml/kernel/ProjectSettings.java:580,tool-assisted
 UML-15,boolean-property,org/argouml/notation/providers/uml/OperationNotationUml.java:571,tool-assisted
+UML-15,boolean-property,org/argouml/uml/diagram/ui/FigAssociation.java:748,manual
 UML-16,boolean-property,org/argouml/notation/providers/uml/AttributeNotationUml.java:595,manual
 UML-16,boolean-property,org/argouml/kernel/ProjectSettings.java:636,tool-assisted
 UML-16,boolean-property,org/argouml/notation/providers/uml/OperationNotationUml.java:555,tool-assisted
@@ -422,6 +427,8 @@ UML-2,null-boolean-check,org/argouml/ui/ProjectBrowser.java:956,tool-assisted
 UML-2,boolean-property,org/argouml/ui/ProjectBrowser.java:1495,tool-assisted
 UML-2,boolean-property,org/argouml/uml/ui/ActionRevertToSaved.java:83,tool-assisted
 UML-20,if-chain,src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java:482,manual
+UML-20,enum-instanceOf,org/argouml/model/euml/CoreHelperEUMLImpl.java:2030,manual
+UML-20,enum-instanceOf,org/argouml/model/mdr/CoreHelperMDRImpl.java:3421,manual
 UML-21,if-chain,org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java:708,manual
 UML-22,override-value-set,src/argouml-app/src/org/argouml/persistence/AbstractFilePersister.java:217,manual
 UML-23,str-ends,"src/argouml-app/src/org/argouml/uml/ui/SaveGraphicsManager.java:285,286,292,314",manual
