@@ -1,0 +1,6 @@
+argouml/tools
+argouml/src/argouml-app/tests
+argouml/src/argouml-core-diagrams-sequence2/tests
+argouml/src/argouml-core-model/tests
+argouml/src/argouml-core-model-mdr/tests
+argouml-java/tests

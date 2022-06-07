@@ -1,0 +1,3 @@
+src/etc
+src/tests
+src/tutorial

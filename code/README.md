@@ -20,6 +20,6 @@ To obtain the traces used for the study in section 6 of the submission:
 1. Ensure that your current working directory is the directory where *this* README is located.
 2. Run:
 
-        ./gradlew run --args="-r 2 ../../detector-inputs.csv ./programs ../trace-results" -PjvmArgs="-Xms1g -Xmx10g"
+        ./gradlew run --args="-t 2 -c ../cache ../../detector-inputs.csv ./programs ../../data ../trace-results" -PjvmArgs="-Xms1g -Xmx10g"
         
    The results will be in the `trace-results` directory.

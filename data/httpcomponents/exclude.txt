@@ -1,0 +1,15 @@
+httpcomponents-client-4.5.9/fluent-hc/src/examples
+httpcomponents-client-4.5.9/fluent-hc/src/test
+httpcomponents-client-4.5.9/httpclient/src/examples
+httpcomponents-client-4.5.9/httpclient/src/test
+httpcomponents-client-4.5.9/httpclient-cache/src/test
+httpcomponents-client-4.5.9/httpclient-osgi/src/test
+httpcomponents-client-4.5.9/httpclient-win/src/test
+httpcomponents-client-4.5.9/httpclient-win/src/examples
+httpcomponents-client-4.5.9/httpmime/src/test
+httpcomponents-client-4.5.9/httpmime/src/examples
+httpcomponents-core-4.4.11/httpcore/src/examples
+httpcomponents-core-4.4.11/httpcore/src/test
+httpcomponents-core-4.4.11/httpcore-ab/src/test
+httpcomponents-core-4.4.11/httpcore-nio/src/examples
+httpcomponents-core-4.4.11/httpcore-nio/src/test

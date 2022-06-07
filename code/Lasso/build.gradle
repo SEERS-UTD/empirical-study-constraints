@@ -4,6 +4,29 @@ apply plugin: 'eclipse'
 
 version = '0.1'
 
+// Unpacks source code and textual artifacts of target systems used in experiments
+task unpackData(type: Copy) {
+    def dataDir = file('../../data')
+
+    // Must use a simple into call as base directory first
+    into dataDir
+
+    dataDir.traverse(
+            type: groovy.io.FileType.FILES,
+            maxDepth: 1,
+            nameFilter: ~/^(sources|docs-txt|binaries)\.zip$/
+    ) { zip ->
+        into(zip.parentFile.name) {
+            from zipTree(zip)
+        }
+    }
+}
+
+// Every time Lasso is compiled, the experimental data will be extracted if it hasn't been already
+compileJava {
+    dependsOn unpackData
+}
+
 repositories {
     mavenCentral()
 }
