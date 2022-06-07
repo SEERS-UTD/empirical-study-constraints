@@ -1,16 +1,18 @@
-project(':Lasso'){
-    apply plugin: 'java'
+plugins {
+    // WALA needs this here
+    id 'nebula.lint' version '15.0.0'
+    id 'nebula.source-jar' version '9.5.0'
+}
 
-    dependencies {
-        implementation project(':seers-base')
-    }
+project(':Lasso') {
+    apply plugin: 'java'
 
     compileJava {
         dependsOn ':Lasso:programs:sample:jar'
     }
 }
 
-project(':Lasso:programs:sample'){
+project(':Lasso:programs:sample') {
     apply plugin: 'java'
 
     libsDirName = '..'

@@ -1,5 +1,6 @@
 # An empirical study of data constraint implementations in Java
-Replication package for EMSE submission.
+
+Replication package for EMSE article.
 
 ## Contents
 

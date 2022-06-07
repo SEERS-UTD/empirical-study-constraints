@@ -1,31 +1,70 @@
 package edu.utdallas.seers.lasso.detector.elements;
 
 import edu.utdallas.seers.lasso.detector.utils.Utils;
+import edu.utdallas.seers.lasso.entity.constants.*;
 
-public class Const extends ClassAttribute {
+import java.util.HashMap;
+import java.util.Map;
+
+// TODO merge with Constant class
+@SuppressWarnings("DeprecatedIsStillUsed")
+@Deprecated
+public class Const {
+    private static final Map<String, Constant<?>> NAMED_CONSTS = new HashMap<>();
+    static {
+        NAMED_CONSTS.put("java.lang.Integer#MAX_VALUE", new IntegerConstant(Integer.MAX_VALUE));
+        NAMED_CONSTS.put("java.lang.Integer#MIN_VALUE", new IntegerConstant(Integer.MIN_VALUE));
+        NAMED_CONSTS.put("java.lang.Long#MAX_VALUE", new LongConstant(Long.MAX_VALUE));
+        NAMED_CONSTS.put("java.lang.Long#MIN_VALUE", new LongConstant(Long.MIN_VALUE));
+        NAMED_CONSTS.put("java.lang.Double#POSITIVE_INFINITY", new DoubleConstant(Double.POSITIVE_INFINITY));
+        NAMED_CONSTS.put("java.lang.Double#NEGATIVE_INFINITY", new DoubleConstant(Double.NEGATIVE_INFINITY));
+        NAMED_CONSTS.put("java.lang.Double#MAX_VALUE", new DoubleConstant(Double.MAX_VALUE));
+        NAMED_CONSTS.put("java.lang.Double#MIN_VALUE", new DoubleConstant(Double.MIN_VALUE));
+    }
+
   private String val;
-  private ConstType constType;
+  private final ConstType constType;
 
-  public enum ConstType {
+    public Constant<?> toConstant() {
+        switch (constType) {
+            case STR:
+                return new StringConstant(val);
+            case BOOL:
+                return new BooleanConstant(val.equals("TRUE"));
+            case CHAR:
+                return new CharConstant(val.charAt(0));
+            case NUM:
+                if (NAMED_CONSTS.containsKey(val)) {
+                    return NAMED_CONSTS.get(val);
+                }
+
+                if (val.endsWith("L")) {
+                    return new LongConstant(Long.parseLong(val.replace("L", "")));
+                }
+
+                try {
+                    return new IntegerConstant(Integer.parseInt(val));
+                } catch (NumberFormatException e) {
+                    return new DoubleConstant(Double.parseDouble(val));
+                }
+            default:
+                return null;
+        }
+    }
+
+    public enum ConstType {
     NUM,
     STR,
     BOOL,
-    CHAR;
+    CHAR
   }
 
   public Const(String val) {
-    super(null);
     this.val = val;
     if (Utils.isNumeric(val)
+            // FIXME this cannot be right
         || val.length() == 1
-        || val.equals("java.lang.Integer#MAX_VALUE")
-        || val.equals("java.lang.Integer#MIN_VALUE")
-        || val.equals("java.lang.Long#MAX_VALUE")
-        || val.equals("java.lang.Long#MIN_VALUE")
-        || val.equals("java.lang.Double#POSITIVE_INFINITY")
-        || val.equals("java.lang.Double#NEGATIVE_INFINITY")
-        || val.equals("java.lang.Double#MAX_VALUE")
-        || val.equals("java.lang.Double#MIN_VALUE")) {
+        || NAMED_CONSTS.containsKey(val)) {
         this.constType = ConstType.NUM;
     }else if (Utils.isNumeric(val.replaceAll("L$",""))){
         this.constType = ConstType.NUM;
@@ -41,7 +80,6 @@ public class Const extends ClassAttribute {
   }
 
   public Const(String val, ConstType constType) {
-    super(null);
     this.val = val;
     this.constType = constType;
   }

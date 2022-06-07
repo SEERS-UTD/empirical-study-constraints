@@ -1,7 +1,5 @@
 package edu.utdallas.seers.lasso.experiment;
 
-import com.ibm.wala.ipa.cha.ClassHierarchyException;
-import com.ibm.wala.util.CancelException;
 import edu.utdallas.seers.files.csv.CSVWriter;
 import edu.utdallas.seers.lasso.data.ConstraintLoader;
 import edu.utdallas.seers.lasso.detector.PatternDetector;
@@ -33,6 +31,11 @@ import static edu.utdallas.seers.files.Files.getTempFilePath;
 
 public class PatternDetectionEvaluator {
     final Logger logger = LoggerFactory.getLogger(PatternDetectionEvaluator.class);
+    private final Path sourcesPath;
+
+    public PatternDetectionEvaluator(Path sourcesPath) {
+        this.sourcesPath = sourcesPath;
+    }
 
     public static void main(String[] args) {
         ArgumentParser parser = ArgumentParsers.newFor("PatternDetectionEvaluator").build()
@@ -44,15 +47,18 @@ public class PatternDetectionEvaluator {
         parser.addArgument("targetsPath")
                 .help("Path of the target systems' binaries and entry point data");
 
+        parser.addArgument("sourcesPath")
+                .help("Path of the target systems' source code");
+
         parser.addArgument("destPath")
                 .help("Directory where evaluation will be written");
 
-        parser.addArgument("-t", "--temp-dir")
-                .help("Temp files/debug directory")
-                .setDefault(getTempFilePath("pattern-debug").toString());
+        parser.addArgument("-c", "--cache-dir")
+                .help("Cache files/debug directory")
+                .setDefault(getTempFilePath("detector-cache").toString());
 
-        parser.addArgument("-r", "--threads")
-                .help("Number of threads to use. Each thread will evaluate one system, using ~5GB of memory")
+        parser.addArgument("-t", "--threads")
+                .help("Number of threads to use. Each thread will evaluate one system, using ~4GB of heap")
                 .type(Integer.class)
                 .setDefault(4);
 
@@ -65,12 +71,12 @@ public class PatternDetectionEvaluator {
             return;
         }
 
-        new PatternDetectionEvaluator()
+        new PatternDetectionEvaluator(Paths.get(namespace.getString("sourcesPath")))
                 .startExperiment(
                         Paths.get(namespace.getString("constraintsPath")),
                         Paths.get(namespace.getString("targetsPath")),
                         Paths.get(namespace.getString("destPath")),
-                        Paths.get(namespace.getString("temp_dir")),
+                        Paths.get(namespace.getString("cache_dir")),
                         namespace.getInt("threads"));
     }
 
@@ -166,15 +172,9 @@ public class PatternDetectionEvaluator {
 
                     PatternEntry[] patternInputs = inputs.toArray(new PatternEntry[0]);
 
-                    PatternDetector detector;
-
-                    try {
-                        detector = new PatternDetector(systemName, infoMap.get(systemName), true, tempDir);
-                    } catch (ClassHierarchyException | CancelException | IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    return detector.detectPatterns(patternInputs);
+                    return PatternDetector.create(systemName, infoMap.get(systemName), true,
+                            tempDir, sourcesPath)
+                            .detectPatterns(patternInputs);
                 })
                 .filter(Objects::nonNull);
     }

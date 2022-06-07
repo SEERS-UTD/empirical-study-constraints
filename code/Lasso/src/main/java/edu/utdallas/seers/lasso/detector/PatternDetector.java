@@ -7,6 +7,7 @@ import com.ibm.wala.classLoader.Language;
 import com.ibm.wala.classLoader.ShrikeCTMethod;
 import com.ibm.wala.ipa.callgraph.*;
 import com.ibm.wala.ipa.callgraph.impl.DefaultEntrypoint;
+import com.ibm.wala.ipa.callgraph.impl.SubtypesEntrypoint;
 import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.callgraph.propagation.InstanceKey;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
@@ -22,6 +23,7 @@ import com.ibm.wala.util.CancelException;
 import com.ibm.wala.util.collections.Pair;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.strings.StringStuff;
+import edu.utdallas.seers.lasso.detector.ast.PatternStore;
 import edu.utdallas.seers.lasso.detector.elements.Const;
 import edu.utdallas.seers.lasso.detector.elements.DetectionSource;
 import edu.utdallas.seers.lasso.detector.utils.ConstSlice;
@@ -30,7 +32,6 @@ import edu.utdallas.seers.lasso.entity.*;
 import edu.utdallas.seers.lasso.misc.DebugWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import scala.collection.convert.JavaCollectionWrappers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -58,17 +59,25 @@ public class PatternDetector {
     private final IfChainDetector ifChainDetector = new IfChainDetector();
     private final Map<String, Set<String>> printAllIRClasses;
     private final Map<String, Set<String>> printAllUsagesMethods;
-    private CallGraph cg;
+    private final AssignConstantDetector assignConstantDetector = new AssignConstantDetector(this);
+    /**
+     * FIXME properly separate detector logic to make this private
+     */
+    CallGraph cg;
     private IClassHierarchy cha;
-    private SDG<InstanceKey> sdg;
+    /**
+     * FIXME properly separate detector logic to make this private
+     */
+    SDG<InstanceKey> sdg;
+    private PatternStore patternStore;
 
     {
         printAllIRClasses = Stream.of(
-                "argouml-77&org.argouml.core.propertypanels.ui.UMLMultiplicityPanel$MultiplicityCheckBox",
-                "jEdit-38&org.gjt.sp.jedit.textarea.TextAreaPainter$PaintText",
-                "jEdit-31&org.gjt.sp.jedit.browser.VFSBrowser$FavoritesMenuButton$ActionHandler",
-                "argouml-47&org.argouml.uml.diagram.ui.FigGeneralization",
-                "joda-time-12&org.joda.time.chrono.GJChronology"
+                "UML-15&org.argouml.uml.diagram.ui.FigOrdering",
+                "UML-14&org.argouml.configuration.Configuration",
+                "UML-11&org.argouml.uml.diagram.static_structure.ui.FigPackage",
+                "UML-12&org.argouml.configuration.Configuration",
+                "UML-12&org.argouml.notation.ui.SettingsTabNotation"
         )
                 .map(s -> {
                     String[] split = s.split("&");
@@ -101,8 +110,15 @@ public class PatternDetector {
                 ));
     }
 
-    public PatternDetector(String systemName, SystemInfo systemInfo, boolean printLog, Path debugDir)
-            throws ClassHierarchyException, CancelException, IOException {
+    /**
+     * Only use directly when testing.
+     *
+     * @param systemName
+     * @param systemInfo
+     * @param printLog
+     * @param debugDir
+     */
+    PatternDetector(String systemName, SystemInfo systemInfo, boolean printLog, Path debugDir) {
         this.systemName = systemName;
         hasEntryPoint = systemInfo.hasEntryPoint();
         hasExclusion = systemInfo.hasExclusion();
@@ -113,7 +129,25 @@ public class PatternDetector {
 
         String scopeFile = String.format("programs/%s/scope.txt", systemName);
         String exclusionFile = String.format("programs/%s/exclusions.txt", systemName);
-        buildGraphs(scopeFile, exclusionFile);
+
+        try {
+            buildGraphs(scopeFile, exclusionFile);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private PatternDetector(String systemName, SystemInfo systemInfo, boolean printLog, Path debugDir,
+                            Path sourcesPath, PatternStore store) {
+        this(systemName, systemInfo, printLog, debugDir);
+        patternStore = store;
+    }
+
+    public static PatternDetector create(String systemName, SystemInfo systemInfo, boolean printLog, Path debugDir,
+                                         Path sourcesPath) {
+        // Create store first to be notified of errors early
+        PatternStore store = PatternStore.create(sourcesPath, systemName, debugDir.resolve("pattern-cache"));
+        return new PatternDetector(systemName, systemInfo, printLog, debugDir, sourcesPath, store);
     }
 
     public static Iterable<Entrypoint> makeEntrypoints(
@@ -154,7 +188,7 @@ public class PatternDetector {
                 tmpList.add(pe);
             }
 
-            PatternDetector pd = new PatternDetector(systemName, si, false, Paths.get("/home/zenong/Documents/tracability programs"));
+            PatternDetector pd = create(systemName, si, false, Paths.get("/home/zenong/Documents/tracability programs"), null);
             pd.printIR("SampleClass", "execute");
             pd.detectPatterns(tmpList.toArray(new PatternEntry[0]));
         }
@@ -204,8 +238,10 @@ public class PatternDetector {
 
         long end = System.currentTimeMillis();
 
-        Slicer.DataDependenceOptions dOptions = Slicer.DataDependenceOptions.NO_HEAP_NO_EXCEPTIONS;
+        Slicer.DataDependenceOptions dOptions = Slicer.DataDependenceOptions.NO_BASE_NO_HEAP_NO_EXCEPTIONS;
         Slicer.ControlDependenceOptions cOptions = Slicer.ControlDependenceOptions.NONE;
+
+        logger.info(withSystemName("Finished building call graph"));
 
         start = System.currentTimeMillis();
         logger.info(withSystemName("Building SDG..."));
@@ -250,6 +286,7 @@ public class PatternDetector {
     public PatternOutputFormat detectPattern(PatternEntry patternEntry)
             throws IllegalArgumentException, CancelException {
         // TODO instead of converting the inputs here, make everything take input type instead of strings
+        // FIXME add input types to the spreadsheet (e.g. field vs local var and data type)
         // FIXME do not use the final constant value if it is 0 or 1 because it will mistakenly detect every true or false
         String[] inputs = patternEntry.getInputs().stream()
                 .map(i -> i.getType() == DetectorInput.Type.FINAL_CONSTANT ? i.getValue().getVal() : i.getIdentifier())
@@ -269,24 +306,10 @@ public class PatternDetector {
             case 2:
                 operand1 = inputs[0];
                 operand2 = inputs[1];
-                patterns.addAll(handleRegex(operand1, operand2));
                 // TODO: combine following detections to reduce running time
                 patterns.addAll(handleConstArg(operand1, operand2));
-                patterns.addAll(handleAssignConst(operand1, operand2));
+                patterns.addAll(assignConstantDetector.detectConstAssign(operand1, operand2, patternStore));
                 patterns.addAll(handleBinFlag(operand1, operand2));
-                // STR_STARTS:
-                patterns.addAll(
-                        findAndSlice(operand1)
-                                .map(s ->
-                                        detectComparisonConst(
-                                                s,
-                                                new Const(operand2, Const.ConstType.STR),
-                                                "str-starts",
-                                                PatternEntry.PatternType.STR_STARTS
-                                        )
-                                )
-                                .orElse(Collections.emptyList())
-                );
 
                 break;
             case 1:
@@ -298,15 +321,17 @@ public class PatternDetector {
                 List<Pattern> oneInputPatterns = slice.map(
                         // TODO utility method concat lists
                         s -> Stream.of(
-                                nullEmptyCheckDetector.detectPattern(s),
-                                ifChainDetector.detectPattern(s),
+                                nullEmptyCheckDetector.detectPattern(s, patternStore),
+                                ifChainDetector.detectPattern(s, patternStore),
                                 detectComparisonConst(
                                         s,
                                         new Const("", Const.ConstType.BOOL),
                                         "eq",
-                                        PatternEntry.PatternType.BOOLEAN_PROPERTY
+                                        PatternType.BOOLEAN_PROPERTY
                                 ),
-                                detectEqualsOrChain(s)
+                                detectEqualsOrChain(s, patternStore),
+                                detectSelfComp(s),
+                                detectSwitchLenChar(s)
                         )
                                 .flatMap(Collection::stream)
                                 .collect(Collectors.toList())
@@ -314,14 +339,26 @@ public class PatternDetector {
                         .orElse(Collections.emptyList());
 
                 patterns.addAll(oneInputPatterns);
+                patterns.addAll(detectRetConst(operand1));
+
+                // str-format
+                patterns.addAll(handleStrFormat(operand1));
                 break;
         }
-        // TODO convert patterns to PSLF and filter via AST
-        return patternEntry.toOutputFormat(patterns);
+
+        PatternOutputFormat patternOutputs = patternEntry.toOutputFormat(astFilter(patterns));
+
+        return patternOutputs;
+    }
+
+    private List<Pattern> astFilter(List<Pattern> patterns) {
+        // TODO also transform each pattern, i.e. if the AST pattern has multiple lines, set correct lines in returned pattern
+        return patterns.stream()
+                .filter(patternStore::contains)
+                .collect(Collectors.toList());
     }
 
     // FIXME it's only optional in case the attribute is not found, but that should be an error instead
-
     private Optional<Slice> findAndSlice(String attributeName) throws CancelException {
         List<DetectionSource> getAttributeInsts = findAttributes(attributeName, true, true, true, true);
 
@@ -346,7 +383,66 @@ public class PatternDetector {
 
         return Optional.of(slice);
     }
-    private List<Pattern> detectComparisonConst(Slice slice, Const constant, String operator, PatternEntry.PatternType patternType) {
+
+    private List<Pattern> detectRetConst(String operand) throws CancelException {
+        List<Pattern> patterns = new ArrayList<>();
+        Iterator<CGNode> it = cg.iterator();
+        while (it.hasNext()) {
+            CGNode node = it.next();
+            if (node.getMethod()
+                    .getReference()
+                    .getDeclaringClass()
+                    .getClassLoader()
+                    .equals(ClassLoaderReference.Application)) {
+
+                IR ir = node.getIR();
+                if (ir != null) {
+                    SymbolTable st = ir.getSymbolTable();
+                    Iterator<SSAInstruction> instIt = ir.iterateAllInstructions();
+                    while (instIt.hasNext()) {
+                        SSAInstruction inst = instIt.next();
+                        if (inst instanceof SSAReturnInstruction) {
+                            SSAReturnInstruction retInst = (SSAReturnInstruction) inst;
+                            int v = retInst.getUse(0);
+                            if (v > 0 && st.isConstant(v)) {
+                                if (st.isNumberConstant(v) || st.isStringConstant(v)) {
+                                    if (st.getConstantValue(v).toString().equals(operand)) {
+                                        patterns.add(new SimplePattern(new NormalStatement(node, retInst.iindex)));
+                                    }
+                                }
+                            } else {
+                                if (operand.contains("#")) {
+                                    String[] inputSplit = operand.split("#");
+                                    String inputClass = "L" + inputSplit[0].replace('.', '/');
+                                    String inputAttr = inputSplit[1];
+                                    List<String> classNames = getChaStrings(inputClass);
+
+                                    DefUse du = new DefUse(ir);
+                                    if (v > 0) {
+                                        SSAInstruction defInst = du.getDef(v);
+                                        if (defInst instanceof SSAGetInstruction) {
+                                            SSAGetInstruction getInst = (SSAGetInstruction) defInst;
+                                            String f = getInst.getDeclaredField().getName().toString();
+                                            String c = getInst.getDeclaredField().getDeclaringClass().getName().toString();
+                                            if (inputAttr.equals(f) && matchClassName(getInst, classNames)) {
+                                                patterns.add(new SimplePattern(new NormalStatement(node, retInst.iindex)));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return patterns.stream()
+                .peek(p -> p.setPatternType(PatternType.RETURN_CONSTANT))
+                .collect(Collectors.toList());
+    }
+
+    private List<Pattern> detectComparisonConst(Slice slice, Const constant, String operator, PatternType patternType) {
         List<Pair<Statement, Collection<Statement>>> fakeList =
                 Collections.singletonList(Pair.make(slice.getSource(), slice.getSliceStatements()));
 
@@ -373,82 +469,26 @@ public class PatternDetector {
                 .collect(Collectors.toList());
     }
 
-    private List<Pattern> detectEqualsOrChain(Slice slice) {
-        List<Pattern> patterns = new ArrayList<>();
+    private List<Pattern> detectEqualsOrChain(Slice slice, PatternStore patternStore) {
+        Collection<Statement> astFilteredSlice = new ArrayList<>();
         Map<CGNode, List<StatementWithInstructionIndex>> hm = new HashMap<>();
         Collection<Statement> sliceStmts = slice.getSliceStatements();
-        for (Statement stmt : sliceStmts) {
-            if (stmt instanceof StatementWithInstructionIndex) {
-                StatementWithInstructionIndex s = (StatementWithInstructionIndex) stmt;
-                CGNode node = s.getNode();
-                if (!hm.containsKey(node)) {
-                    hm.put(node, new ArrayList<>());
-                }
-                hm.get(node).add(s);
+
+        HashSet<BasicASTPattern> patternSet = new HashSet<>();
+        for (Statement s : slice.getSliceStatements()) {
+            Pattern temp = new SimplePattern(s, PatternType.EQUALS_OR_CHAIN);
+            Optional<BasicASTPattern> astPattern = patternStore.lookUpInstance(temp);
+            if (astPattern.isPresent()) {
+                patternSet.add(astPattern.get());
             }
         }
 
-        for (CGNode node : hm.keySet()) {
-            SymbolTable st = node.getIR().getSymbolTable();
-            List<StatementWithInstructionIndex> stmts = hm.get(node);
-            List<Integer>  vList = new ArrayList<>();
-            // 0 = normal, 1 = check, 2 = skip
-            int status = 0;
-            boolean skip = false;
-            for (int i = 0; i < stmts.size(); i++) {
-                StatementWithInstructionIndex s = stmts.get(i);
-                SSAInstruction inst = s.getInstruction();
-                if (status == 0) {
-                    if (inst instanceof SSAConditionalBranchInstruction) {
-                        status++;
-                        vList = new ArrayList<>();
-                        for (int j = 0; j < inst.getNumberOfUses(); j++) {
-                            int v = inst.getUse(j);
-                            if (!st.isConstant(v)) {
-                                vList.add(v);
-                            }
-                        }
-                    }
-                } else if (status == 1) {
-                    if (inst instanceof SSAConditionalBranchInstruction) {
-                        boolean match = false;
-                        for (int j = 0; j < inst.getNumberOfUses(); j++) {
-                            int v = inst.getUse(j);
-                            if (vList.contains(v)) {
-                                match = true;
-                                break;
-                            }
-                        }
-                        if (match) {
-                            status++;
-                            patterns.add(new SimplePattern(s));
-                        } else
-                            status--;
-                    } else {
-                        status--;
-                    }
-                } else if (status == 2) {
-                    if (inst instanceof SSAConditionalBranchInstruction) {
-                        boolean match = false;
-                        for (int j = 0; j < inst.getNumberOfUses(); j++) {
-                            int v = inst.getUse(j);
-                            if (vList.contains(v)) {
-                                match = true;
-                                break;
-                            }
-                        }
-                        if (!match)
-                            status = 0;
-                    } else {
-                        status = 0;
-                    }
-                }
-
-            }
+        List<Pattern> patterns = new ArrayList<>();
+        for (BasicASTPattern p : patternSet) {
+            patterns.add(new NoStatementPattern(p));
         }
-        return patterns.stream()
-                .peek(p -> p.setPatternType(PatternEntry.PatternType.EQUALS_OR_CHAIN))
-                .collect(Collectors.toList());
+
+        return patterns;
     }
 
     private List<Pattern> handleBinComp(String operand1, String operand2, String operator)
@@ -472,23 +512,14 @@ public class PatternDetector {
                             s,
                             new Const(operand2),
                             operator,
-                            PatternEntry.PatternType.BINARY_COMPARISON
+                            PatternType.BINARY_COMPARISON
                     ))
                     .orElse(Collections.emptyList());
         } else {
             patterns = detectComparison(operand1, operand2, operator);
         }
         for (Pattern p : patterns) {
-            p.setPatternType(PatternEntry.PatternType.BINARY_COMPARISON);
-        }
-        return patterns;
-    }
-
-    private List<Pattern> handleRegex(String operand1, String operand2) throws CancelException {
-        String operator = "regex";
-        List<Pattern> patterns = detectComparison(operand1, operand2, operator);
-        for (Pattern p : patterns) {
-            p.setPatternType(PatternEntry.PatternType.REGEX);
+            p.setPatternType(PatternType.BINARY_COMPARISON);
         }
         return patterns;
     }
@@ -496,15 +527,7 @@ public class PatternDetector {
     private List<Pattern> handleConstArg(String operand1, String operand2) throws CancelException {
         List<Pattern> patterns = detectConstArg(operand1, operand2);
         for (Pattern p : patterns) {
-            p.setPatternType(PatternEntry.PatternType.CONSTANT_ARGUMENT);
-        }
-        return patterns;
-    }
-
-    private List<Pattern> handleAssignConst(String operand1, String operand2) throws CancelException {
-        List<Pattern> patterns = detectConstAssign(operand1, operand2);
-        for (Pattern p : patterns) {
-            p.setPatternType(PatternEntry.PatternType.ASSIGN_CONSTANT);
+            p.setPatternType(PatternType.CONSTANT_ARGUMENT);
         }
         return patterns;
     }
@@ -512,7 +535,7 @@ public class PatternDetector {
     private List<Pattern> handleBinFlag(String operand1, String operand2) throws CancelException {
         List<Pattern> patterns = detectComparisonBinaryFlag(operand1, operand2);
         for (Pattern p : patterns) {
-            p.setPatternType(PatternEntry.PatternType.BINARY_FLAG_CHECK);
+            p.setPatternType(PatternType.BINARY_FLAG_CHECK);
         }
         return patterns;
     }
@@ -520,7 +543,7 @@ public class PatternDetector {
     private List<Pattern> handleStrFormat(String operand) throws CancelException {
         List<Pattern> patterns = detectStrFormat(operand);
         for (Pattern p : patterns) {
-            p.setPatternType(PatternEntry.PatternType.STR_FORMAT);
+            p.setPatternType(PatternType.STR_FORMAT);
         }
         return patterns;
     }
@@ -540,21 +563,50 @@ public class PatternDetector {
         return patterns;
     }
 
-    private List<Pattern> detectStrFormat(String operand) throws CancelException {
-        List<DetectionSource> getAttributeInsts = findAttributes(operand, true, true, true, true);
-        return findStrFormatInMethod(getAttributeInsts);
+    private List<Pattern> detectSelfComp(Slice slice) {
+        HashSet<BasicASTPattern> patternSet = new HashSet<>();
+
+        Collection<Statement> statements = slice.getSliceStatements();
+        for (Statement s : statements) {
+            Pattern temp = new SimplePattern(s, PatternType.SELF_COMPARISON);
+            Optional<BasicASTPattern> astPattern = patternStore.lookUpInstance(temp);
+            if (astPattern.isPresent()) {
+                patternSet.add(astPattern.get());
+            }
+        }
+
+        List<Pattern> patterns = new ArrayList<>();
+        for (BasicASTPattern p : patternSet) {
+            patterns.add(new NoStatementPattern(p));
+        }
+
+        return patterns;
     }
 
+    private List<Pattern> detectSwitchLenChar(Slice slice) {
+        HashSet<BasicASTPattern> patternSet = new HashSet<>();
 
-//    private List<Pattern> detectComparisonBinaryFlag(String operand1, String operator2)
-//            throws IllegalArgumentException, CancelException {
-//        List<DetectionSource> getAttributeInsts = findAttributes(operand1, true, true, true, true);
-//        List<Pair<Statement, Collection<Statement>>> pairs = slice(sdg, getAttributeInsts);
-//
-//        List<Pair<Statement, List<Statement>>> a = findOperatorConst(pairs, "binOP");
-//
-//        return findConstInSlice(a, new Const(operator2));
-//    }
+        Collection<Statement> statements = slice.getSliceStatements();
+        for (Statement s : statements) {
+            Pattern temp = new SimplePattern(s, PatternType.SWITCH_LEN_CHAR);
+            Optional<BasicASTPattern> astPattern = patternStore.lookUpInstance(temp);
+            if (astPattern.isPresent()) {
+                patternSet.add(astPattern.get());
+            }
+        }
+
+        List<Pattern> patterns = new ArrayList<>();
+        for (BasicASTPattern p : patternSet) {
+            patterns.add(new NoStatementPattern(p));
+        }
+        return patterns;
+    }
+
+    private List<Pattern> detectStrFormat(String operand) throws CancelException {
+        List<DetectionSource> getAttributeInsts = findAttributes(operand, true, true, true, true);
+        return findStrMethodForSources(getAttributeInsts, "format");
+    }
+
     private List<Pattern> detectComparisonBinaryFlag(String operand1, String operand2)
             throws IllegalArgumentException, CancelException {
         List<DetectionSource> getAttributeInsts = findAttributes(operand1, true, true, true, true);
@@ -650,274 +702,6 @@ public class PatternDetector {
         return patterns;
     }
 
-    private List<Pattern> detectConstAssign(String operand, String constant) throws CancelException {
-        if (operand.split("#").length > 2) {
-            return detectLocVarAssign(operand, constant);
-        } else if (constant.split("#").length > 1) return findObjectAssign(operand, constant);
-        else return findConstAssign(operand, constant);
-    }
-
-    private List<Pattern> detectLocVarAssign(String operand, String constant) throws CancelException {
-        List<Pattern> patterns = new ArrayList<>();
-        String[] inputSplit = operand.split("#");
-        String inputClass = inputSplit[0];
-        inputClass = "L" + inputClass.replace('.', '/');
-        String inputMet = inputSplit[1];
-        String inputVar = inputSplit[2];
-        Map<CGNode, Set<Integer>> sliceMap = ConstSlice.computeSliceMap(cg, new Const(constant));
-        for (Map.Entry<CGNode, Set<Integer>> pair : sliceMap.entrySet()) {
-            CGNode node = pair.getKey();
-            Set<Integer> values = pair.getValue();
-            IR ir = node.getIR();
-            if (node.getMethod().getDeclaringClass().getName().toString().equals(inputClass)
-                    && node.getMethod().getSelector().getName().toString().equals(inputMet))  {
-                if (ir != null) {
-                    Iterator<SSAInstruction> instructionIterator = ir.iterateAllInstructions();
-                    while (instructionIterator.hasNext()) {
-                        SSAInstruction inst = instructionIterator.next();
-                        if (inst.iindex > 0) {
-                            for (int i = 0; i < inst.getNumberOfUses(); i++) {
-                                int vn = inst.getUse(i);
-                                if (values.contains(vn)) {
-                                    String[] localNames = ir.getLocalNames(inst.iindex, vn);
-                                    if (localNames != null) {
-                                        for (String name : localNames) {
-                                            if (inputVar.equals(name)) {
-                                                patterns.add(new SimplePattern(new NormalStatement(node, inst.iindex)));
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                }
-            }
-
-        }
-        return patterns;
-
-//        List<Pattern> patterns = new ArrayList<>();
-//        String[] inputSplit = operand.split("#");
-//        String inputClass = inputSplit[0];
-//        inputClass = "L" + inputClass.replace('.', '/');
-//        String inputMet = inputSplit[1];
-//        String inputVar = inputSplit[2];
-//
-//
-//
-//        List<Pair<CGNode, SSAGetInstruction>> leftPuts = findGetInstruction(inputClass, inputMet, inputVar);
-//        List<DetectionSource> constSources = findAttributes(constant, true, true, false, false);
-//        List<Pair<Statement, Collection<Statement>>> slices = slice(sdg, constSources);
-//        List<Pair<CGNode, SSAGetInstruction>> rightPuts = findGetInSlice(slices);
-//        List<Pair<CGNode, SSAGetInstruction>> tmp = leftPuts;
-//        tmp.retainAll(rightPuts);
-//
-//        for (Pair<CGNode, SSAGetInstruction> p : tmp) {
-//            patterns.add(new SimplePattern(new NormalStatement(p.fst, p.snd.iindex)));
-//        }
-//        return patterns;
-    }
-
-    private List<Pattern> findObjectAssign(String operand, String constant) throws CancelException {
-        List<Pattern> patterns = new ArrayList<>();
-        String[] inputSplit = operand.split("#");
-        String inputClass = inputSplit[0];
-        inputClass = "L" + inputClass.replace('.', '/');
-        String inputAttr = inputSplit[1];
-
-        List<Pair<CGNode, SSAPutInstruction>> leftPuts = findPutInstruction(inputClass, inputAttr);
-
-        List<DetectionSource> constSources = findAttributes(constant, true, true, false, false);
-        List<Pair<Statement, Collection<Statement>>> slices = slice(sdg, constSources);
-        List<Pair<CGNode, SSAPutInstruction>> rightPuts = findPutInSlice(slices);
-
-        List<Pair<CGNode, SSAPutInstruction>> tmp = leftPuts;
-        tmp.retainAll(rightPuts);
-
-        for (Pair<CGNode, SSAPutInstruction> p : tmp) {
-            patterns.add(new SimplePattern(new NormalStatement(p.fst, p.snd.iindex)));
-        }
-        return patterns;
-    }
-
-    private List<Pair<CGNode, SSAGetInstruction>> findGetInSlice(
-            List<Pair<Statement, Collection<Statement>>> pairs) {
-        List<Pair<CGNode, SSAGetInstruction>> ret = new ArrayList<>();
-        for (Pair<Statement, Collection<Statement>> pair : pairs) {
-            for (Statement stmt : pair.snd) {
-                if (stmt instanceof StatementWithInstructionIndex) {
-                    StatementWithInstructionIndex s = (StatementWithInstructionIndex) stmt;
-                    if (s.getNode()
-                            .getMethod()
-                            .getReference()
-                            .getDeclaringClass()
-                            .getClassLoader()
-                            .equals(ClassLoaderReference.Application)) {
-                        if (s.getInstruction() instanceof SSAGetInstruction) {
-                            SSAGetInstruction getInst = (SSAGetInstruction) s.getInstruction();
-                            ret.add(Pair.make(s.getNode(), getInst));
-                        }
-                    }
-                }
-            }
-        }
-        return ret;
-    }
-
-    private List<Pair<CGNode, SSAPutInstruction>> findPutInSlice(
-            List<Pair<Statement, Collection<Statement>>> pairs) {
-        List<Pair<CGNode, SSAPutInstruction>> ret = new ArrayList<>();
-        for (Pair<Statement, Collection<Statement>> pair : pairs) {
-            for (Statement stmt : pair.snd) {
-                if (stmt instanceof StatementWithInstructionIndex) {
-                    StatementWithInstructionIndex s = (StatementWithInstructionIndex) stmt;
-                    if (s.getNode()
-                            .getMethod()
-                            .getReference()
-                            .getDeclaringClass()
-                            .getClassLoader()
-                            .equals(ClassLoaderReference.Application)) {
-                        if (s.getInstruction() instanceof SSAPutInstruction) {
-                            SSAPutInstruction putInst = (SSAPutInstruction) s.getInstruction();
-                            ret.add(Pair.make(s.getNode(), putInst));
-                        }
-                    }
-                }
-            }
-        }
-        return ret;
-    }
-
-    private List<Pair<CGNode, SSAPutInstruction>> findPutInstruction(String inputClass, String inputAttr) {
-        List<Pair<CGNode, SSAPutInstruction>> ret = new ArrayList<>();
-
-        Iterator<CGNode> it = cg.iterator();
-        while (it.hasNext()) {
-            CGNode node = it.next();
-            IR ir = node.getIR();
-            if (ir != null) {
-                Iterator<SSAInstruction> instIt = ir.iterateAllInstructions();
-                while (instIt.hasNext()) {
-                    SSAInstruction inst = instIt.next();
-                    if (inst instanceof SSAPutInstruction) {
-                        SSAPutInstruction putInst = (SSAPutInstruction) inst;
-                        if (putInst
-                                .getDeclaredField()
-                                .getDeclaringClass()
-                                .getName()
-                                .toString()
-                                .equals(inputClass)
-                                && putInst.getDeclaredField().getName().toString().equals(inputAttr)) {
-                            ret.add(Pair.make(node, putInst));
-                        }
-                    }
-                }
-            }
-        }
-        return ret;
-    }
-
-    private List<Pair<CGNode, SSAGetInstruction>> findGetInstruction(
-            String inputClass, String inputAttr, String inputVar) {
-        List<Pair<CGNode, SSAGetInstruction>> ret = new ArrayList<>();
-
-        Iterator<CGNode> it = cg.iterator();
-        while (it.hasNext()) {
-            CGNode node = it.next();
-            IR ir = node.getIR();
-            if (ir != null) {
-                Iterator<SSAInstruction> instIt = ir.iterateAllInstructions();
-                while (instIt.hasNext()) {
-                    SSAInstruction inst = instIt.next();
-                    if (inst instanceof SSAGetInstruction) {
-                        SSAGetInstruction getInst = (SSAGetInstruction) inst;
-                        if (node.getMethod().getDeclaringClass().getName().toString().equals(inputClass)
-                                && node.getMethod().getSelector().getName().toString().equals(inputAttr)) {
-                            int vn = getInst.getDef(0);
-                            if (getInst.iindex >= 0) {
-                                String[] localNames = node.getIR().getLocalNames(inst.iindex, vn);
-                                if (localNames != null) {
-                                    for (String name : localNames) {
-                                        if (name != null && name.equals(inputVar)) {
-                                            ret.add(Pair.make(node, getInst));
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return ret;
-    }
-
-    private List<Pattern> findConstAssign(String operand, String constant) {
-        String[] inputSplit = operand.split("#");
-        if (inputSplit.length < 2) return new ArrayList<>();
-        String inputClass = inputSplit[0];
-        inputClass = "L" + inputClass.replace('.', '/');
-        String inputAttr = inputSplit[1];
-
-        List<Pair<CGNode, SSAPutInstruction>> pairs = findPutInstruction(inputClass, inputAttr);
-        List<Pattern> patterns = new ArrayList<>();
-        for (Pair<CGNode, SSAPutInstruction> p : pairs) {
-            CGNode node = p.fst;
-            SSAPutInstruction putInst = p.snd;
-            if (matchConstValue(putInst.getUse(1), new Const(constant), node.getIR().getSymbolTable())) {
-                patterns.add(new SimplePattern(new NormalStatement(node, putInst.iindex)));
-            }
-        }
-        return patterns;
-    }
-
-
-//    private List<DetectionSource> findConstInMethod(
-//            List<DetectionSource> methodSources, List<DetectionSource> finalFields, String constant) {
-//        Set<DetectionSource> set = new LinkedHashSet<>();
-//        for (DetectionSource d : methodSources) {
-//            SymbolTable st = d.getNode().getIR().getSymbolTable();
-//            for (int i = 0;
-//                 i < d.getNode().getIR().getInstructions()[d.getIndex()].getNumberOfUses();
-//                 i++) {
-//                int vn = d.getNode().getIR().getInstructions()[d.getIndex()].getUse(i);
-//                if (constant.equals("TRUE") || constant.equals("FALSE")) {
-//                    if (st.isIntegerConstant(vn)) {
-//                        int boolValue = st.getIntValue(vn);
-//                        if (boolValue == 0 || boolValue == 1) {
-//                            set.add(
-//                                    new DetectionSource(
-//                                            d.getNode(), d.getIndex(), DetectionSource.StmtType.RET_CALLER));
-//                        }
-//                    } else if (st.isBooleanConstant(vn)) {
-//                        set.add(
-//                                new DetectionSource(
-//                                        d.getNode(), d.getIndex(), DetectionSource.StmtType.RET_CALLER));
-//                    }
-//                } else if (st.isConstant(vn)
-//                        && !st.isNullConstant(vn)
-//                        && constant.equals(st.getConstantValue(vn).toString())) {
-//                    set.add(
-//                            new DetectionSource(d.getNode(), d.getIndex(), DetectionSource.StmtType.RET_CALLER));
-//                } else {
-//                    for (DetectionSource f : finalFields) {
-//                        if (vn == f.getNode().getIR().getInstructions()[f.getIndex()].getDef()) {
-//                            set.add(
-//                                    new DetectionSource(d.getNode(), d.getIndex(), DetectionSource.StmtType.RET_CALLER));
-//                        }
-//                    }
-//                }
-//
-//            }
-//        }
-//
-//        List<DetectionSource> ret = new ArrayList<>();
-//        ret.addAll(set);
-//        return ret;
-//    }
     private List<DetectionSource> findConstInMethod(
             List<DetectionSource> methodSources, List<DetectionSource> finalFields) {
         Set<DetectionSource> set = new LinkedHashSet<>();
@@ -928,9 +712,11 @@ public class PatternDetector {
                  i++) {
                 int vn = d.getNode().getIR().getInstructions()[d.getIndex()].getUse(i);
                 for (DetectionSource f : finalFields) {
-                    if (vn == f.getNode().getIR().getInstructions()[f.getIndex()].getDef()) {
-                        set.add(
-                                new DetectionSource(d.getNode(), d.getIndex(), DetectionSource.StmtType.RET_CALLER));
+                    if (d.getNode() == f.getNode()) {
+                        if (vn == f.getNode().getIR().getInstructions()[f.getIndex()].getDef()) {
+                            set.add(
+                                    new DetectionSource(d.getNode(), d.getIndex(), DetectionSource.StmtType.RET_CALLER));
+                    }
                     }
                 }
             }
@@ -1233,7 +1019,7 @@ public class PatternDetector {
             if (type.equals(ClassLoaderReference.Application)) {
                 for (IMethod m : ic.getDeclaredMethods()) {
                     if (m.isPublic()) {
-                        ret.add(new DefaultEntrypoint(m, cha));
+                        ret.add(new SubtypesEntrypoint(m, cha));
                     }
                 }
             }
@@ -1291,6 +1077,7 @@ public class PatternDetector {
         }
         return set;
     }
+
     private List<DetectionSource> findTwoStepAttributes(String input) throws CancelException {
         input = input.substring(1);
         String attriInput = input.split("@")[0];
@@ -1316,35 +1103,13 @@ public class PatternDetector {
         return ret;
     }
 
-    private List<DetectionSource> findMethodInSlice(
-            List<Pair<Statement, Collection<Statement>>> slices, String mName) {
-        Set<DetectionSource> set = new LinkedHashSet<>();
-        for (Pair<Statement, Collection<Statement>> pair : slices) {
-            Collection<Statement> slice = pair.snd;
-            for (Statement stmt : slice) {
-                if (stmt instanceof StatementWithInstructionIndex) {
-                    StatementWithInstructionIndex s = (StatementWithInstructionIndex) stmt;
-                    SSAInstruction inst = s.getInstruction();
-                    if (inst instanceof SSAInvokeInstruction) {
-                        SSAInvokeInstruction invokeInst = (SSAInvokeInstruction) inst;
-                        if (invokeInst.getDeclaredTarget().getSelector().getName().toString().equals(mName)) {
-                            set.add(
-                                    new DetectionSource(
-                                            s.getNode(), inst.iindex, DetectionSource.StmtType.RET_CALLER));
-                        }
-                    }
-                }
-            }
-        }
-        return new ArrayList<>(set);
-    }
-
     // TODO Break up this by attribute type
     // TODO find fields and methods via the cha instead of iterating the cg
 
-    private List<DetectionSource> findAttributes(
+    List<DetectionSource> findAttributes(
             String input, boolean field, boolean value, boolean method, boolean constant)
             throws CancelException {
+        logger.info(withSystemName("start finding attributes"));
         Set<DetectionSource> set = new LinkedHashSet<>();
 
         if (input.length() == 0) return new ArrayList<>();
@@ -1426,8 +1191,10 @@ public class PatternDetector {
         }
         List<DetectionSource> ret = new ArrayList<>();
         ret.addAll(set);
+        logger.info(withSystemName("finish finding attributes"));
         return ret;
     }
+
     private List<DetectionSource> findPairLocalVars(
             String cName, String mName, String var1, String var2) {
         cName = "L" + cName.replace('.', '/');
@@ -1466,7 +1233,7 @@ public class PatternDetector {
 
     // TODO break this up by constant type
 
-    private boolean matchConstValue(int v, Const constant, SymbolTable st) {
+    boolean matchConstValue(int v, Const constant, SymbolTable st) {
         String val = constant.getVal();
         if (st.isNumberConstant(v)) {
             if (st.isIntegerConstant(v)) {
@@ -1550,6 +1317,7 @@ public class PatternDetector {
         }
         return false;
     }
+
     private boolean checkContainsName(String[] nameList, String name) {
         if (nameList == null) return false;
         for (String n : nameList) {
@@ -1559,8 +1327,7 @@ public class PatternDetector {
     }
 
     // TODO make this return Slice type
-
-    private List<Pair<Statement, Collection<Statement>>> slice(SDG sdg, List<DetectionSource> sources)
+    List<Pair<Statement, Collection<Statement>>> slice(SDG sdg, List<DetectionSource> sources)
             throws CancelException {
         List<Pair<Statement, Collection<Statement>>> ret =
                 new ArrayList<>();
@@ -1588,7 +1355,8 @@ public class PatternDetector {
         }
         return ret;
     }
-    private List<Pattern> findStrFormatInMethod(List<DetectionSource> sources) {
+
+    private List<Pattern> findStrMethodForSources(List<DetectionSource> sources, String method) {
         List<Pattern> patterns = new ArrayList<>();
         for (DetectionSource d : sources) {
             Statement stmt = d.getSliceSource();
@@ -1611,7 +1379,7 @@ public class PatternDetector {
                                 .getSelector()
                                 .getName()
                                 .toString()
-                                .equals("format")) {
+                                .equals(method)) {
                             patterns.add(new SimplePattern(new NormalStatement(stmt.getNode(), invokeInst.iindex)));
                         }
                     }
@@ -1838,6 +1606,7 @@ public class PatternDetector {
         }
         return ret;
     }
+
     private List<Pattern> getIntersection(
             List<Pair<Statement, List<Statement>>> statements1,
             List<Pair<Statement, List<Statement>>> statements2) {

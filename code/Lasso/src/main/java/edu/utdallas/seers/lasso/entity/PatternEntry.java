@@ -10,12 +10,10 @@ public class PatternEntry {
         List<PatternSingleLineFormat> detected = new ArrayList<>();
         // FIXME instead of converting each pattern to single line, let them have multiple lines if that is how they were detected
         for (Pattern pattern : patterns) {
-            PatternSingleLineFormat pslf = pattern.toSingleLineFormat();
-            if (pslf != null)
-                detected.add(pattern.toSingleLineFormat());
+            Optional<PatternSingleLineFormat> pslf = pattern.toSingleLineFormat();
+            pslf.ifPresent(detected::add);
         }
-        Set<PatternSingleLineFormat> set = new HashSet<>();
-        set.addAll(detected);
+        Set<PatternSingleLineFormat> set = new HashSet<>(detected);
         detected.clear();
         detected.addAll(set);
 
@@ -26,7 +24,9 @@ public class PatternEntry {
         for (PatternSingleLineFormat p : detected) {
             boolean flag = false;
             for (int i = 0; i < falseNegatives.size(); i++) {
-                if (p.equals(falseNegatives.get(i))) {
+                PatternSingleLineFormat fn = falseNegatives.get(i);
+                if (p.getLineNum() == fn.getLineNum() &&
+                        p.getFile().equals(fn.getFile())) {
                     flag = true;
                     truePositives.add(p);
                     falseNegatives.remove(i);
@@ -242,19 +242,19 @@ public class PatternEntry {
     }
     sb.append("]\n");
 
-    sb.append(inputs.toString());
+        sb.append(inputs.toString());
 
-    sb.append("pattern: ");
+        sb.append("pattern: ");
 
-    sb.append(pType.toString().toLowerCase().replace("_", "-"));
+        sb.append(pType.toString().toLowerCase().replace("_", "-"));
 
-    sb.append("]\n");
+        sb.append("]\n");
 
-    sb.append("inputs: ");
-    for (DetectorInput inp : inputs) {
-      sb.append(inp);
+        sb.append("inputs: ");
+        for (DetectorInput inp : inputs) {
+            sb.append(inp);
+        }
+
+        return sb.toString();
     }
-
-    return sb.toString();
-  }
 }

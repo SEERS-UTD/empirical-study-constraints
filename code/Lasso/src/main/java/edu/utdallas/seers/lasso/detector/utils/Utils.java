@@ -1,8 +1,12 @@
 package edu.utdallas.seers.lasso.detector.utils;
 
 import com.ibm.wala.classLoader.CallSiteReference;
+import com.ibm.wala.classLoader.IMethod;
+import com.ibm.wala.classLoader.ShrikeBTMethod;
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
+import com.ibm.wala.ipa.slicer.Statement;
+import com.ibm.wala.ipa.slicer.StatementWithInstructionIndex;
 import com.ibm.wala.ssa.*;
 import com.ibm.wala.util.collections.Pair;
 import edu.utdallas.seers.lasso.detector.elements.Const;
@@ -189,6 +193,43 @@ public class Utils {
 
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
+    }
+
+    public static String getClassName(Statement s) {
+        IMethod im = s.getNode().getMethod();
+        if (im instanceof ShrikeBTMethod) {
+            ShrikeBTMethod m = (ShrikeBTMethod) im;
+            return m.getDeclaringClass().toString();
+        } else
+            return null;
+    }
+
+    public static int getLineNumber(Statement s) {
+        if (s instanceof StatementWithInstructionIndex) {
+            StatementWithInstructionIndex stmt = (StatementWithInstructionIndex) s;
+            int instructionIndex = stmt.getInstructionIndex();
+
+            IMethod im = s.getNode().getMethod();
+            if (im instanceof ShrikeBTMethod) {
+                ShrikeBTMethod m = (ShrikeBTMethod) im;
+                try {
+                    int bcIndex = m.getBytecodeIndex(instructionIndex);
+                    try {
+                        int src_line_number = m.getLineNumber(bcIndex);
+                        return src_line_number;
+                    } catch (Exception e) {
+                        return -1;
+                    }
+                } catch (Exception e) {
+                    System.err.println("it's probably not a BT method (e.g. it's a fakeroot method)");
+                    System.err.println(e.getMessage());
+                    return -1;
+                }
+
+            } else
+                return -1;
+        } else
+            return -1;
     }
 
 }

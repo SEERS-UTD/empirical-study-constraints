@@ -1,0 +1,31 @@
+plugins {
+	id 'eclipse'
+}
+
+eclipse.project.natures 'org.eclipse.pde.PluginNature'
+
+sourceSets.main {
+	java {
+	     srcDir 'src'
+	     exclude 'wala.properties'
+	}
+	resources.srcDirs = [
+		'dat',
+		'lib',
+	]
+}
+
+dependencies {
+	implementation project(':WALA:com.ibm.wala.shrike')
+	implementation project(':WALA:com.ibm.wala.util')
+}
+
+tasks.named('javadoc') {
+	def dalvik = ':com.ibm.wala.dalvik'
+	dependsOn "$dalvik:compileJava"
+
+	doFirst {
+		classpath += files project(dalvik).compileJava
+	}
+}
+apply from: project(':WALA').file("gradle-mvn-push.gradle")

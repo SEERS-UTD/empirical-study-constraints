@@ -18,7 +18,7 @@ public class SampleProjectTest {
     }
 
     private void testSampleConstraints() {
-        new PatternDetectionEvaluator()
+        new PatternDetectionEvaluator(Paths.get("programs"))
                 .startExperiment(
                         Paths.get("test-data", "sample-traces.csv"),
                         Paths.get("programs"),

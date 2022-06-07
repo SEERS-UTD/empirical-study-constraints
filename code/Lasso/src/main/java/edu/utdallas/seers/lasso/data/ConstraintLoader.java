@@ -6,6 +6,7 @@ import edu.utdallas.seers.files.csv.CSVReader;
 import edu.utdallas.seers.lasso.entity.DetectorInput;
 import edu.utdallas.seers.lasso.entity.PatternEntry;
 import edu.utdallas.seers.lasso.entity.PatternTruth;
+import edu.utdallas.seers.lasso.entity.PatternType;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -60,6 +61,7 @@ public class ConstraintLoader {
         inputMods.put(new Pair<>("JTI-1", "org.joda.time.DateTime"), "org.joda.time.DateTime#<init>");
         inputMods.put(new Pair<>("JTI-6", "org.joda.time.DateTime"), "org.joda.time.DateTime#<init>");
         inputMods.put(new Pair<>("JTI-3", "org.joda.time.Instant#Instant(long)"), "org.joda.time.Instant#<init>");
+        inputMods.put(new Pair<>("HCO-7", "org.apache.http.pool.AbstractConnPool#AbstractConnPool"), "org.apache.http.pool.AbstractConnPool#<init>");
     }
 
     public Stream<PatternEntry> loadConstraints(Path csvFile) throws IOException {

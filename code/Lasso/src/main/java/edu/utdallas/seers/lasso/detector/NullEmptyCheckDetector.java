@@ -1,69 +1,60 @@
 package edu.utdallas.seers.lasso.detector;
 
-import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.expr.BinaryExpr;
-import com.ibm.wala.ipa.slicer.NormalStatement;
 import com.ibm.wala.ipa.slicer.Statement;
-import com.ibm.wala.ssa.SymbolTable;
-import com.ibm.wala.util.collections.Pair;
-import edu.utdallas.seers.lasso.entity.NullEmptyPattern;
+import edu.utdallas.seers.lasso.detector.ast.PatternStore;
 import edu.utdallas.seers.lasso.entity.Pattern;
+import edu.utdallas.seers.lasso.entity.PatternType;
+import edu.utdallas.seers.lasso.entity.SimplePattern;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-// TODO: Use this template to create superclasses for other detectors
+/**
+ * TODO perhaps make the results distinct
+ */
 public class NullEmptyCheckDetector {
 
-    public static boolean match(Node node) {
-        if (!(node instanceof BinaryExpr)) {
-            return false;
-        }
-
-        BinaryExpr expression = (BinaryExpr) node;
-
-        // TODO: do we want to allow x.equals(null)? this code would not allow that
-        BinaryExpr.Operator operator = expression.getOperator();
-        // Operator is == or != and one of the expressions is a null literal
-        return (operator.equals(BinaryExpr.Operator.EQUALS) ||
-                operator.equals(BinaryExpr.Operator.NOT_EQUALS)) &&
-                (expression.getLeft().isNullLiteralExpr() ||
-                        expression.getRight().isNullLiteralExpr());
-    }
+    private static final List<PatternType> PATTERNS = Arrays.asList(
+            PatternType.NULL_CHECK, PatternType.NULL_EMPTY_CHECK, PatternType.NULL_ZERO_CHECK
+    );
 
     /**
      * Finds the instances of this pattern in the slice.
      *
-     * @param slice A slice to match on.
+     * @param slice        A slice to match on.
+     * @param patternStore Store to check matches on.
      * @return A list of pattern instances that were found in the slice,
      */
-    List<Pattern> detectPattern(Slice slice) {
-        List<Pair<Statement, Collection<Statement>>> list = Collections.singletonList(Pair.make(slice.getSource(), slice.getSliceStatements()));
-        List<Pair<Statement, List<Statement>>> matchedStatements = PatternDetector.findOperatorConst(list, "eq");
+    List<Pattern> detectPattern(Slice slice, PatternStore patternStore) {
+        return slice.getSliceStatements().stream()
+                .flatMap(s -> checkStatement(s, patternStore))
+                .collect(Collectors.toList());
+    }
 
-        List<Pattern> ret = new ArrayList<>();
-        for (Pair<Statement, List<Statement>> pair1 : matchedStatements) {
-            Statement source = pair1.fst;
-            List<Statement> stmts = pair1.snd;
-            for (Statement operator : stmts) {
-                if (operator instanceof NormalStatement) {
-                    NormalStatement s = (NormalStatement) operator;
-                    SymbolTable st = operator.getNode().getIR().getSymbolTable();
+    private Stream<Pattern> checkStatement(Statement statement, PatternStore patternStore) {
+        SimplePattern temp = new SimplePattern(statement, null);
 
-                    for (int i = 0; i < s.getInstruction().getNumberOfUses(); i++) {
-                        int v = s.getInstruction().getUse(i);
-                        if (st.isNullConstant(v)
-                                || (st.isStringConstant(v) && st.getConstantValue(v).equals(""))) {
-                            Pattern pattern = new NullEmptyPattern(source, operator);
-                            ret.add(pattern);
-                        }
-                    }
-                }
-            }
+        Set<PatternType> patternsPresent = PATTERNS.stream()
+                .filter(p -> {
+                    temp.setPatternType(p);
+
+                    return patternStore.contains(temp);
+                })
+                .collect(Collectors.toSet());
+
+        Stream<PatternType> resultStream;
+        if (patternsPresent.size() == 1) {
+            resultStream = patternsPresent.stream();
+        } else {
+            // If we have null check + other stuff, get rid of the null check because it is redundant
+            resultStream = patternsPresent.stream()
+                    .filter(p -> !p.equals(PatternType.NULL_CHECK));
         }
 
-        return ret;
+        return resultStream
+                .map(t -> new SimplePattern(statement, t));
     }
 }

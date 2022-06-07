@@ -5,24 +5,30 @@ import com.ibm.wala.ipa.slicer.Statement;
 import com.ibm.wala.ipa.slicer.StatementWithInstructionIndex;
 import com.ibm.wala.util.collections.Pair;
 
+import java.util.Optional;
+
 public abstract class Pattern {
 
     // TODO add how far along the slice the pattern was found as final field in constructor and fix all errors
     protected Statement operator;
-    private PatternEntry.PatternType patternType;
+    private PatternType patternType;
 
-    protected Pattern(Statement operator, PatternEntry.PatternType patternType) {
+    protected Pattern(Statement operator, PatternType patternType) {
         this.operator = operator;
         this.patternType = patternType;
     }
 
-    public PatternSingleLineFormat toSingleLineFormat() {
+    public Optional<PatternSingleLineFormat> toSingleLineFormat() {
+        if (!(operator instanceof StatementWithInstructionIndex)) {
+            return Optional.empty();
+        }
+
         Pair<String, Integer> pair = getClassLinePair((StatementWithInstructionIndex) operator);
         if (pair == null) {
             // this is not a BT method
-            return null;
+            return Optional.empty();
         }
-        return new PatternSingleLineFormat(pair.fst, pair.snd, false, patternType);
+        return Optional.of(new PatternSingleLineFormat(pair.fst, pair.snd, false, patternType));
     }
 
     protected Pair<String, Integer> getClassLinePair(StatementWithInstructionIndex s) {
@@ -46,7 +52,7 @@ public abstract class Pattern {
         return null;
     }
 
-    public void setPatternType(PatternEntry.PatternType patternType) {
+    public void setPatternType(PatternType patternType) {
         this.patternType = patternType;
     }
 }

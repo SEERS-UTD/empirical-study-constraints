@@ -10,7 +10,7 @@ public class NullEmptyPattern extends Pattern {
     private Statement operand;
 
     public NullEmptyPattern(Statement operand, Statement operator) {
-        super(operator, PatternEntry.PatternType.NULL_EMPTY_CHECK);
+        super(operator, PatternType.NULL_EMPTY_CHECK);
         this.operand = operand;
     }
 

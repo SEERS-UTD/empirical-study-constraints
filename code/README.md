@@ -1,6 +1,6 @@
 # Tool for Semi-Automated Constraint Tracing
 
-We include the source code of the tool used to locate additional enforcing statements for the constraints in our data set, as detailed in section 6.3 of the submission.
+We include the source code of the tool used to locate additional enforcing statements for the constraints in our data set, as detailed in section 6.1 of the article.
 
 ## Requirements
 

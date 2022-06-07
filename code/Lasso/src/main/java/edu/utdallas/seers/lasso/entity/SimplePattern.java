@@ -7,4 +7,8 @@ public class SimplePattern extends Pattern {
     public SimplePattern(Statement operator) {
         super(operator, null);
     }
+
+    public SimplePattern(Statement operator, PatternType type) {
+        super(operator, type);
+    }
 }

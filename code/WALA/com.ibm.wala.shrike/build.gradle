@@ -1,0 +1,13 @@
+plugins {
+	id 'eclipse'
+}
+
+eclipse.project.natures 'org.eclipse.pde.PluginNature'
+
+sourceSets.main.java.srcDirs = ['src']
+
+dependencies {
+	implementation project(':WALA:com.ibm.wala.util')
+}
+
+apply from: project(':WALA').file("gradle-mvn-push.gradle")
