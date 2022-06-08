@@ -342,7 +342,7 @@ public class PatternDetector {
                 patterns.addAll(detectRetConst(operand1));
 
                 // str-format
-                patterns.addAll(handleStrFormat(operand1));
+//                patterns.addAll(handleStrFormat(operand1));
                 break;
         }
 
