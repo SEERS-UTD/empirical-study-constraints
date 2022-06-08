@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class BooleanPropertyMatcher extends PatternMatcher {
-    final Logger logger = LoggerFactory.getLogger(BooleanPropertyMatcher.class);
+//    final Logger logger = LoggerFactory.getLogger(BooleanPropertyMatcher.class);
     private final BooleanExpressionGuesser guesser = new BooleanExpressionGuesser();
 
     private <T, E extends Expression & Resolvable<T>>
@@ -36,10 +36,10 @@ public class BooleanPropertyMatcher extends PatternMatcher {
             if (unit.isPresent()) {
                 // If the unit is present the error must be due to something else, so report it
                 // TODO fix these errors when possible
-                logger.warn(String.format("Type resolution error at line %s of %s: \"%s\"",
-                        node.getRange().map(r -> String.valueOf(r.begin.line)).orElse("<no line>"),
-                        unit.flatMap(CompilationUnit::getStorage).map(s -> s.getPath().toString()).orElse("<no file>"),
-                        node.toString()));
+//                logger.warn(String.format("Type resolution error at line %s of %s: \"%s\"",
+//                        node.getRange().map(r -> String.valueOf(r.begin.line)).orElse("<no line>"),
+//                        unit.flatMap(CompilationUnit::getStorage).map(s -> s.getPath().toString()).orElse("<no file>"),
+//                        node.toString()));
             }
         }
 

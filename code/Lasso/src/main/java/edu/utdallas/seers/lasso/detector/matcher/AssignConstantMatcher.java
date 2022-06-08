@@ -30,7 +30,7 @@ import java.util.Optional;
  */
 public class AssignConstantMatcher extends PatternMatcher {
 
-    private final Logger logger = LoggerFactory.getLogger(AssignConstantMatcher.class);
+//    private final Logger logger = LoggerFactory.getLogger(AssignConstantMatcher.class);
     private final ConstantExtractor constantExtractor = new ConstantExtractor();
     private final VariableExtractor variableExtractor = new VariableExtractor();
 
@@ -49,7 +49,7 @@ public class AssignConstantMatcher extends PatternMatcher {
                         );
                     } catch (Exception e) {
                         // TODO this can fail if the expression is in a method overridden in an enum constant
-                        logger.error("Could not extract variable", e);
+//                        logger.error("Could not extract variable", e);
                         return null;
                     }
                 })
@@ -72,7 +72,7 @@ public class AssignConstantMatcher extends PatternMatcher {
                                 ));
                     } catch (Exception e) {
                         // TODO this can fail if the expression is in a method overridden in an enum constant
-                        logger.error("Could not extract variable", e);
+//                        logger.error("Could not extract variable", e);
                         return Optional.empty();
                     }
                 })

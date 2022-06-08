@@ -63,14 +63,14 @@ class ASTPatternDetector {
                                     return n.accept(m, fileName).stream();
                                 } catch (Exception | Error e) {
                                     // TODO deal with these errors
-                                    logger.warn("Error processing \"{}\" with {} in {}, {}",
-                                            n,
-                                            m.getPatternType(),
-                                            unit.getStorage()
-                                                    .map(s -> s.getPath().toString())
-                                                    .orElse("<No file>"),
-                                            e.getMessage()
-                                    );
+//                                    logger.warn("Error processing \"{}\" with {} in {}, {}",
+//                                            n,
+//                                            m.getPatternType(),
+//                                            unit.getStorage()
+//                                                    .map(s -> s.getPath().toString())
+//                                                    .orElse("<No file>"),
+//                                            e.getMessage()
+//                                    );
 
                                     return Stream.empty();
                                 }
